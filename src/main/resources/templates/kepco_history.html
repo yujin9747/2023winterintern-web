@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>electric_rates_history 정보 조회</title>
+</head>
+<body>
+  <h1 th:text="${message}"></h1>
+  <div>
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th>#</th>
+              <th>UseVal</th> <th>GB1</th> <th>GB2</th> <th>SelVal</th> <th>BaseFee</th> <th>LoadVal</th> <th>SUF</th> <th>FAF</th> <th>WIF</th> <th>createdAt</th> <th>appliedPeriod</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="k : ${kepcoHistory}">
+              <td th:text="${k.id}"></td>
+              <td th:text="${k.useVal}"></td>
+              <td th:text="${k.gb1}"></td>
+              <td th:text="${k.gb2}"></td>
+              <td th:text="${k.selVal}"></td>
+              <td th:text="${k.baseFee}"></td>
+              <td th:text="${k.loadVal}"></td>
+              <td th:text="${k.suf}"></td>
+              <td th:text="${k.faf}"></td>
+              <td th:text="${k.wif}"></td>
+              <td th:text="${k.createdAt}"></td>
+              <td th:text="${k.appliedPeriod}"></td>
+          </tr>
+          </tbody>
+      </table>
+  </div>
+</body>
+</html>
