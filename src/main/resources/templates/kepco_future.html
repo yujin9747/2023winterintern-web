@@ -2,17 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>현재 적용중인 kepco 요금표 조회</title>
+    <title>적용 예정인 kepco 요금표 조회</title>
 </head>
 <body>
   <h1 th:text="${message}"></h1>
   <h3 th:text="|오늘 날짜: ${today}|"></h3>
-  <h3 th:text="|적용일자 ${kepcoCurrent[0].appliedPeriod.toLocalDate()} 부터 적용된 요금표입니다.|"></h3>
-  <p>
-    <h3 th:if="${days==0}">D-Day!! 오늘 새로 적용된 요금표입니다.</h3>
-    <h3 th:unless="${days==0}" th:text="|D+${days}|"></h3>
-  </p>
-
+  <h3 th:text="|적용 예정 일자 ${kepcoFuture[0].appliedPeriod.toLocalDate()} 부터 적용 예정인 요금표입니다. (D-${days})|"></h3>
   <div>
       <table class="table table-striped">
           <thead>
@@ -22,7 +17,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="k : ${kepcoCurrent}">
+          <tr th:each="k : ${kepcoFuture}">
               <td th:text="${k.id}"></td>
               <td th:text="${k.useVal}"></td>
               <td th:text="${k.gb1}"></td>

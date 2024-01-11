@@ -30,6 +30,7 @@ class KepcoHistoryController (
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
         today = LocalDateTime.of(2023, 12, 29, 0, 0, 0)
+//        today = LocalDateTime.of(2023,11,13,0,0,0)
         val kepcoCurrent = service.getCurrentKepcoTable(today)
 
         // 해당 요금표가 적용된지 며칠이 지났는지 D+ 계산하기
@@ -39,6 +40,24 @@ class KepcoHistoryController (
         model.addAttribute("today", today.toLocalDate())
         model.addAttribute("days", days)
         return "kepco_current"
+    }
+
+    @GetMapping("/future")
+    fun getFutureKepcoTable(model: Model): String {
+        model.addAttribute("message", "현재 날짜 이후에 적용될 요금표 조회")
+
+        // 기준이 될 오늘 날짜 넘기기
+        var today = LocalDateTime.now()
+        today = LocalDateTime.of(2023, 12, 29, 0, 0, 0)
+        val kepcoFuture = service.getFutureKepcoTable(today)
+
+        // 해당 요금표가 적용된지 며칠이 지났는지 D- 계산하기
+        val days = today.differentDays(kepcoFuture[0].appliedPeriod!!)
+
+        model.addAttribute("kepcoFuture", kepcoFuture)
+        model.addAttribute("today", today.toLocalDate())
+        model.addAttribute("days", days)
+        return "kepco_future"
     }
 
     internal fun LocalDateTime.differentDays(from: LocalDateTime): Long {
