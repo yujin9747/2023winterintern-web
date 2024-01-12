@@ -1,6 +1,6 @@
 package com.example.kepcoweb.domain
 
-import javax.persistence.*
+import jakarta.persistence.*
 import java.time.LocalDateTime
 import org.hibernate.annotations.CreationTimestamp
 
