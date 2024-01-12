@@ -6,7 +6,9 @@ import java.time.temporal.ChronoUnit
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import kotlin.math.abs
 
 @Controller
@@ -23,15 +25,26 @@ class KepcoHistoryController (
         return "kepco_history"
     }
 
+    // today는 여러 상황을 보여주기 위해 임의로 넣은 것
     @GetMapping("/current")
-    fun getCurrentKepcoTable(model: Model): String {
+    fun getCurrentKepcoTable(
+        model: Model,
+        @RequestParam("year") year: Int,
+        @RequestParam("month") month: Int,
+        @RequestParam("day") day: Int
+    ): String {
         model.addAttribute("message", "현재 날짜 기준 적용되는 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
-        today = LocalDateTime.of(2023, 12, 29, 0, 0, 0)
-//        today = LocalDateTime.of(2023,11,13,0,0,0)
+        today = LocalDateTime.of(year,month,day,0,0,0)
         val kepcoCurrent = service.getCurrentKepcoTable(today)
+
+        if (kepcoCurrent.isEmpty()) {
+            model.addAttribute("message", "현재 날짜보다 이전에 적용된 요금표가 없습니다.")
+            model.addAttribute("today", today.toLocalDate())
+            return "kepco_error"
+        }
 
         // 해당 요금표가 적용된지 며칠이 지났는지 D+ 계산하기
         val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
@@ -43,15 +56,25 @@ class KepcoHistoryController (
     }
 
     @GetMapping("/future")
-    fun getFutureKepcoTable(model: Model): String {
+    fun getFutureKepcoTable(
+        model: Model,
+        @RequestParam("year") year: Int,
+        @RequestParam("month") month: Int,
+        @RequestParam("day") day: Int
+    ): String {
         model.addAttribute("message", "현재 날짜 이후에 적용될 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
-        today = LocalDateTime.of(2023, 12, 29, 0, 0, 0)
+        today = LocalDateTime.of(year, month, day, 0, 0, 0)
         val kepcoFuture = service.getFutureKepcoTable(today)
 
         // 해당 요금표가 적용된지 며칠이 지났는지 D- 계산하기
+        if (kepcoFuture.isEmpty()) {
+            model.addAttribute("message", "현재 날짜보다 미래에 적용될 요금표가 없습니다.")
+            model.addAttribute("today", today.toLocalDate())
+            return "kepco_error"
+        }
         val days = today.differentDays(kepcoFuture[0].appliedPeriod!!)
 
         model.addAttribute("kepcoFuture", kepcoFuture)
