@@ -47,7 +47,9 @@ class KepcoHistoryService(
     }
 
     fun getFutureKepcoTable(today: LocalDateTime): List<KepcoDto> {
-        return repository.findAllFutureTable(today)
+        val future = repository.findFutureAppliedPeriod(today) ?: return emptyList()
+
+        return repository.findAllByAppliedPeriod(future.appliedPeriod!!)
             .map {
                 DtoUtils.createKepcoDto(it)
             }
