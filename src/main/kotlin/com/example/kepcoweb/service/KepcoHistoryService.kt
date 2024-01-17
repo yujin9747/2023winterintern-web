@@ -38,7 +38,9 @@ class KepcoHistoryService(
     }
 
     fun getCurrentKepcoTable(today: LocalDateTime): List<KepcoDto> {
-        return repository.findAllCurrentTable(today)
+        val current = repository.findCurrentAppliedPeriod(today) ?: return emptyList()
+
+        return repository.findAllByAppliedPeriod(current.appliedPeriod!!)
             .map{
                 DtoUtils.createKepcoDto(it)
             }

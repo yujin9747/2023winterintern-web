@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.Query
 interface KepcoHistoryRepository : JpaRepository<KepcoHistory, Int> {
 
     @Query("SELECT k FROM KepcoHistory k " +
-            "WHERE k.appliedPeriod <= :currentDate " +
+            "WHERE k.appliedPeriod <= :tomorrow " +
             "ORDER BY k.id DESC " +
-            "LIMIT 44")
-    fun findAllCurrentTable(currentDate: LocalDateTime): List<KepcoHistory>
+            "LIMIT 1")
+    fun findCurrentAppliedPeriod(tomorrow: LocalDateTime): KepcoHistory?
+
+    fun findAllByAppliedPeriod(currentDate: LocalDateTime): List<KepcoHistory>
 
 
     @Query("SELECT k FROM KepcoHistory k " +
