@@ -33,6 +33,15 @@ class KepcoHistoryController (
         return "kepco_timeLoad"
     }
 
+    @GetMapping("/monthSeason")
+    fun getMonthSeasonHistory(model: Model): String {
+        model.addAttribute("message", "electric_rates_month_season_history 테이블 정보 조회 페이지")
+
+        val monthSeason = service.getMonthSeasonHistory()
+        model.addAttribute("monthSeason", monthSeason)
+        return "kepco_monthSeason"
+    }
+
     // today는 여러 상황을 보여주기 위해 임의로 넣은 것
     @GetMapping("/current")
     fun getCurrentKepcoTable(

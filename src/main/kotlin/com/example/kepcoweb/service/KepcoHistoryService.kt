@@ -2,8 +2,10 @@ package com.example.kepcoweb.service
 
 import com.example.kepcoweb.dto.DtoUtils
 import com.example.kepcoweb.dto.KepcoDto
+import com.example.kepcoweb.dto.MonthSeasonDto
 import com.example.kepcoweb.dto.TimeLoadDto
 import com.example.kepcoweb.repository.KepcoHistoryRepository
+import com.example.kepcoweb.repository.MonthSeasonHistoryRepository
 import com.example.kepcoweb.repository.TimeLoadHistoryRepository
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
@@ -11,7 +13,8 @@ import org.springframework.stereotype.Service
 @Service
 class KepcoHistoryService(
     val repository: KepcoHistoryRepository,
-    val timeLoadRepository: TimeLoadHistoryRepository
+    val timeLoadRepository: TimeLoadHistoryRepository,
+    val monthSeasonRepository: MonthSeasonHistoryRepository
 ) {
     fun getKepcoHistory(): List<KepcoDto> {
         return repository.findAll()
@@ -27,6 +30,13 @@ class KepcoHistoryService(
             }
     }
 
+    fun getMonthSeasonHistory(): List<MonthSeasonDto> {
+        return monthSeasonRepository.findAll()
+            .map {
+                DtoUtils.createMonthSeasonDto(it)
+            }
+    }
+
     fun getCurrentKepcoTable(today: LocalDateTime): List<KepcoDto> {
         return repository.findAllCurrentTable(today)
             .map{
@@ -36,7 +46,7 @@ class KepcoHistoryService(
 
     fun getFutureKepcoTable(today: LocalDateTime): List<KepcoDto> {
         return repository.findAllFutureTable(today)
-            .map{
+            .map {
                 DtoUtils.createKepcoDto(it)
             }
     }

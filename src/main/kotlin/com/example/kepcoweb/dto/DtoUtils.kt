@@ -61,5 +61,14 @@ class DtoUtils {
             createdAt = it.createdAt,
             appliedPeriod = it.appliedPeriod
         )
+
+
+        fun createMonthSeasonDto(it: MonthSeasonHistory) = MonthSeasonDto(
+            id = it.id,
+            month = it.month,
+            season = it.season,
+            createdAt = it.createdAt,
+            appliedPeriod = it.appliedPeriod
+        )
     }
 }
