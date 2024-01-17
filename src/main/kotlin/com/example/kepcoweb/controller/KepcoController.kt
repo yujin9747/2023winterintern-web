@@ -28,7 +28,7 @@ class KepcoController (
 
         val kepcoTimeLoad = service.getTimeLoad()
 
-        model.addAttribute("kepco", kepcoTimeLoad)
+        model.addAttribute("timeLoad", kepcoTimeLoad)
         return "kepco_timeLoad"
     }
 }

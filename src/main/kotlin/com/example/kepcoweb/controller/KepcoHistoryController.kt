@@ -24,6 +24,15 @@ class KepcoHistoryController (
         return "kepco_history"
     }
 
+    @GetMapping("/timeLoad")
+    fun getTimeLoadHistory(model: Model): String {
+        model.addAttribute("message", "electric_rates_timeLoad_history 테이블 정보 조회 페이지")
+
+        val timeLoadHistory = service.getTimeLoadHistory()
+        model.addAttribute("timeLoad", timeLoadHistory)
+        return "kepco_timeLoad"
+    }
+
     // today는 여러 상황을 보여주기 위해 임의로 넣은 것
     @GetMapping("/current")
     fun getCurrentKepcoTable(

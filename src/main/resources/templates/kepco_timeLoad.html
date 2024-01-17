@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8">
-    <title>electric_rates_timeLoad & history 정보 조회</title>
+    <title>electric_rates_timeLoad & history발 정보 조회</title>
 </head>
 <body>
   <div><button onclick="history.back()">뒤로가기</button></div>
@@ -15,13 +15,13 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="k : ${kepco}">
-              <td th:text="${k.id}"></td>
-              <td th:text="${k.season}"></td>
-              <td th:text="${k.hour}"></td>
-              <td th:text="${k.loadVal}"></td>
-              <td th:text="${k.createdAt}"></td>
-              <td th:text="${k.appliedPeriod}"></td>
+          <tr th:each="t : ${timeLoad}">
+              <td th:text="${t.id}"></td>
+              <td th:text="${t.season}"></td>
+              <td th:text="${t.hour}"></td>
+              <td th:text="${t.loadVal}"></td>
+              <td th:text="${t.createdAt}"></td>
+              <td th:text="${t.appliedPeriod}"></td>
           </tr>
           </tbody>
       </table>

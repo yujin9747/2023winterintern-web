@@ -2,18 +2,28 @@ package com.example.kepcoweb.service
 
 import com.example.kepcoweb.dto.DtoUtils
 import com.example.kepcoweb.dto.KepcoDto
+import com.example.kepcoweb.dto.TimeLoadDto
 import com.example.kepcoweb.repository.KepcoHistoryRepository
+import com.example.kepcoweb.repository.TimeLoadHistoryRepository
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
 
 @Service
 class KepcoHistoryService(
-    val repository: KepcoHistoryRepository
+    val repository: KepcoHistoryRepository,
+    val timeLoadRepository: TimeLoadHistoryRepository
 ) {
     fun getKepcoHistory(): List<KepcoDto> {
         return repository.findAll()
             .map {
                 DtoUtils.createKepcoDto(it)
+            }
+    }
+
+    fun getTimeLoadHistory(): List<TimeLoadDto> {
+        return timeLoadRepository.findAll()
+            .map {
+                DtoUtils.createTimeLoadDto(it)
             }
     }
 
