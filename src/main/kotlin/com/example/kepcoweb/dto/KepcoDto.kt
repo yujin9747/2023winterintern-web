@@ -16,5 +16,16 @@ class KepcoDto (
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null,
     val appliedPeriod: LocalDateTime? = null,
-    val current: LocalDateTime? = null
+    val current: LocalDateTime? = null,
+
+
+    var useValChanged: Boolean? = false,
+    var gb1Changed: Boolean? = false,
+    var gb2Changed: Boolean? = false,
+    var selValChanged: Boolean? = false,
+    var baseFeeChanged: Boolean? = false,
+    var loadValChanged: Boolean? = false,
+    var sufChanged: Boolean? = false,
+    var fafChanged: Boolean? = false,
+    var wifChanged: Boolean? = false
 )

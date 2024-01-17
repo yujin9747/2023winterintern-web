@@ -14,6 +14,12 @@ interface KepcoHistoryRepository : JpaRepository<KepcoHistory, Int> {
     fun findCurrentAppliedPeriod(currentDate: LocalDateTime): KepcoHistory?
 
     @Query("SELECT k FROM KepcoHistory k " +
+            "WHERE k.appliedPeriod < :currentDate " +
+            "ORDER BY k.appliedPeriod DESC " +
+            "LIMIT 1")
+    fun findBeforeAppliedPeriod(currentDate: LocalDateTime): KepcoHistory?
+
+    @Query("SELECT k FROM KepcoHistory k " +
             "WHERE k.appliedPeriod > :currentDate " +
             "ORDER BY k.appliedPeriod ASC " +
             "LIMIT 1")
