@@ -40,11 +40,14 @@ class Kepco {
     @Column(name = "WIF", columnDefinition = "decimal(10,1)")
     var wif: Float? = 0f
 
-    @CreationTimestamp
-    @Column(name = "createdAt", nullable = false, columnDefinition = "datetime(6)")
-    var createdAt: LocalDateTime? = LocalDateTime.now()
-
     @UpdateTimestamp
     @Column(name = "updatedAt", nullable = false, columnDefinition = "datetime(6)")
     var updatedAt: LocalDateTime? = LocalDateTime.now()
+
+    @Column(name = "appliedPeriod", columnDefinition = "datetime(6)")
+    var appliedPeriod: LocalDateTime? = null
+
+    @CreationTimestamp
+    @Column(name = "createdAt", nullable = false, columnDefinition = "datetime(6)")
+    var createdAt: LocalDateTime? = LocalDateTime.now()
 }

@@ -13,10 +13,11 @@ class KepcoController (
     val service: KepcoService
 ){
     @GetMapping
-    fun hello(model: Model): String {
+    fun getKepco(model: Model): String {
         model.addAttribute("message", "electric_rates 테이블 정보 조회 페이지")
 
         val kepco = service.getKepco()
+
         model.addAttribute("kepco", kepco)
         return "kepco"
     }

@@ -1,5 +1,6 @@
 package com.example.kepcoweb.service
 
+import com.example.kepcoweb.dto.DtoUtils
 import com.example.kepcoweb.dto.KepcoDto
 import com.example.kepcoweb.repository.KepcoHistoryRepository
 import java.time.LocalDateTime
@@ -12,60 +13,21 @@ class KepcoHistoryService(
     fun getKepcoHistory(): List<KepcoDto> {
         return repository.findAll()
             .map {
-                KepcoDto(
-                    id = it.id,
-                    useVal = it.useVal,
-                    gb1 = it.gb1,
-                    gb2 = it.gb2,
-                    selVal = it.selVal,
-                    baseFee = it.baseFee,
-                    loadVal = it.loadVal,
-                    suf = it.suf,
-                    faf = it.faf,
-                    wif = it.wif,
-                    createdAt = it.createdAt,
-                    appliedPeriod = it.appliedPeriod
-                )
+                DtoUtils.createKepcoDto(it)
             }
     }
 
     fun getCurrentKepcoTable(today: LocalDateTime): List<KepcoDto> {
         return repository.findAllCurrentTable(today)
             .map{
-                KepcoDto(
-                    id = it.id,
-                    useVal = it.useVal,
-                    gb1 = it.gb1,
-                    gb2 = it.gb2,
-                    selVal = it.selVal,
-                    baseFee = it.baseFee,
-                    loadVal = it.loadVal,
-                    suf = it.suf,
-                    faf = it.faf,
-                    wif = it.wif,
-                    createdAt = it.createdAt,
-                    appliedPeriod = it.appliedPeriod
-                )
+                DtoUtils.createKepcoDto(it)
             }
     }
 
     fun getFutureKepcoTable(today: LocalDateTime): List<KepcoDto> {
         return repository.findAllFutureTable(today)
             .map{
-                KepcoDto(
-                    id = it.id,
-                    useVal = it.useVal,
-                    gb1 = it.gb1,
-                    gb2 = it.gb2,
-                    selVal = it.selVal,
-                    baseFee = it.baseFee,
-                    loadVal = it.loadVal,
-                    suf = it.suf,
-                    faf = it.faf,
-                    wif = it.wif,
-                    createdAt = it.createdAt,
-                    appliedPeriod = it.appliedPeriod
-                )
+                DtoUtils.createKepcoDto(it)
             }
     }
 }
