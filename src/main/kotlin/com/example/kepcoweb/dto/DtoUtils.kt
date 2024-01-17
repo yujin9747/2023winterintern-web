@@ -1,9 +1,6 @@
 package com.example.kepcoweb.dto
 
-import com.example.kepcoweb.domain.Kepco
-import com.example.kepcoweb.domain.KepcoHistory
-import com.example.kepcoweb.domain.TimeLoad
-import com.example.kepcoweb.domain.TimeLoadHistory
+import com.example.kepcoweb.domain.*
 
 class DtoUtils {
 
@@ -53,6 +50,14 @@ class DtoUtils {
             season = it.season,
             hour = it.hour,
             loadVal = it.loadVal,
+            createdAt = it.createdAt,
+            appliedPeriod = it.appliedPeriod
+        )
+
+        fun createMonthSeasonDto(it: MonthSeason) = MonthSeasonDto(
+            id = it.id,
+            month = it.month,
+            season = it.season,
             createdAt = it.createdAt,
             appliedPeriod = it.appliedPeriod
         )

@@ -31,4 +31,14 @@ class KepcoController (
         model.addAttribute("timeLoad", kepcoTimeLoad)
         return "kepco_timeLoad"
     }
+
+    @GetMapping("/monthSeason")
+    fun getMonthSeason(model: Model): String {
+        model.addAttribute("message", "electric_rates_month_season 테이블 정보 조회 페이지")
+
+        val monthSeason = service.getMonthSeason()
+
+        model.addAttribute("monthSeason", monthSeason)
+        return "kepco_monthSeason"
+    }
 }
