@@ -2,6 +2,7 @@ package com.example.kepcoweb.dto
 
 import com.example.kepcoweb.domain.Kepco
 import com.example.kepcoweb.domain.KepcoHistory
+import com.example.kepcoweb.domain.TimeLoad
 
 class DtoUtils {
 
@@ -33,6 +34,15 @@ class DtoUtils {
             suf = it.suf,
             faf = it.faf,
             wif = it.wif,
+            createdAt = it.createdAt,
+            appliedPeriod = it.appliedPeriod
+        )
+
+        fun createTimeLoadDto(it: TimeLoad) = TimeLoadDto(
+            id = it.id,
+            season = it.season,
+            hour = it.hour,
+            loadVal = it.loadVal,
             createdAt = it.createdAt,
             appliedPeriod = it.appliedPeriod
         )

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title>electric_rates_timeLoad & history 정보 조회</title>
+</head>
+<body>
+  <div><button onclick="history.back()">뒤로가기</button></div>
+  <h1 th:text="${message}"></h1>
+  <div>
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <th>#</th>
+              <th>Season</th> <th>Hour</th> <th>LoadVal</th> <th>createdAt</th> <th>appliedPeriod</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="k : ${kepco}">
+              <td th:text="${k.id}"></td>
+              <td th:text="${k.season}"></td>
+              <td th:text="${k.hour}"></td>
+              <td th:text="${k.loadVal}"></td>
+              <td th:text="${k.createdAt}"></td>
+              <td th:text="${k.appliedPeriod}"></td>
+          </tr>
+          </tbody>
+      </table>
+  </div>
+</body>
+</html>
