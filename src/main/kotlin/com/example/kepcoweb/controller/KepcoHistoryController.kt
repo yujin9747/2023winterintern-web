@@ -46,15 +46,19 @@ class KepcoHistoryController (
     @GetMapping("/current")
     fun getCurrentKepcoTable(
         model: Model,
-        @RequestParam("year") year: Int,
-        @RequestParam("month") month: Int,
-        @RequestParam("day") day: Int
+        @RequestParam("year") year: Int?,
+        @RequestParam("month") month: Int?,
+        @RequestParam("day") day: Int?
     ): String {
         model.addAttribute("message", "현재 날짜 기준 적용되는 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
-        today = LocalDateTime.of(year,month,day,0,0,0)
+
+        if (year != null && month != null && day != null){
+            today = LocalDateTime.of(year, month, day, 0, 0, 0)
+        }
+
         val kepcoCurrent = service.getCurrentKepcoTable(today)
 
         if (kepcoCurrent.isEmpty()) {
@@ -75,15 +79,18 @@ class KepcoHistoryController (
     @GetMapping("/future")
     fun getFutureKepcoTable(
         model: Model,
-        @RequestParam("year") year: Int,
-        @RequestParam("month") month: Int,
-        @RequestParam("day") day: Int
+        @RequestParam("year") year: Int?,
+        @RequestParam("month") month: Int?,
+        @RequestParam("day") day: Int?
     ): String {
         model.addAttribute("message", "현재 날짜 이후에 적용될 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
-        today = LocalDateTime.of(year, month, day, 0, 0, 0)
+
+        if (year != null && month != null && day != null){
+            today = LocalDateTime.of(year, month, day, 0, 0, 0)
+        }
         val kepcoFuture = service.getFutureKepcoTable(today)
 
         // 해당 요금표가 적용된지 며칠이 지났는지 D- 계산하기
@@ -103,15 +110,18 @@ class KepcoHistoryController (
     @GetMapping("/current-before")
     fun getCurrentAndBeforeKepcoTable(
         model: Model,
-        @RequestParam("year") year: Int,
-        @RequestParam("month") month: Int,
-        @RequestParam("day") day: Int
+        @RequestParam("year") year: Int?,
+        @RequestParam("month") month: Int?,
+        @RequestParam("day") day: Int?
     ) : String {
         model.addAttribute("message", "현재 적용중인 요금표와 이전에 적용된 요금표 비교 조회")
 
         // 기준이 될 오늘 날짜 넘기기
         var today = LocalDateTime.now()
-        today = LocalDateTime.of(year, month, day, 0, 0, 0)
+
+        if (year != null && month != null && day != null){
+            today = LocalDateTime.of(year, month, day, 0, 0, 0)
+        }
         var kepcoCurrent = service.getCurrentKepcoTable(today)
         val kepcoBefore = service.getBeforeKepcoTable(today)
 
