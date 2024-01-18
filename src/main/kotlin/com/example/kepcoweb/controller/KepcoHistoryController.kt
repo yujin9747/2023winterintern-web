@@ -1,6 +1,8 @@
 package com.example.kepcoweb.controller
 
+import com.example.kepcoweb.dto.KepcoDto
 import com.example.kepcoweb.service.KepcoHistoryService
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import org.springframework.stereotype.Controller
@@ -16,11 +18,25 @@ class KepcoHistoryController (
     val service: KepcoHistoryService
 ){
     @GetMapping
-    fun getKepcoHistory(model: Model): String {
+    fun getKepcoHistory(
+        model: Model,
+        selectedPeriod: LocalDate?
+    ): String {
         model.addAttribute("message", "electric_rates_history 테이블 정보 조회 페이지")
 
-        val kepcoHistory = service.getKepcoHistory()
+        var kepcoHistory: List<KepcoDto>
+        if (selectedPeriod == null) {
+            kepcoHistory = service.getKepcoHistory()
+        }
+        else {
+            kepcoHistory = service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
+        }
+
+        val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
+
         model.addAttribute("kepcoHistory", kepcoHistory)
+        model.addAttribute("appliedPeriods", appliedPeriodSet)
+        model.addAttribute("selectedPeriod", selectedPeriod)
         return "kepco_history"
     }
 

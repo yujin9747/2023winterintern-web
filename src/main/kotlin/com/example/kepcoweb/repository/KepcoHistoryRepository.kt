@@ -26,4 +26,7 @@ interface KepcoHistoryRepository : JpaRepository<KepcoHistory, Int> {
     fun findFutureAppliedPeriod(currentDate: LocalDateTime): KepcoHistory?
 
     fun findAllByAppliedPeriod(currentDate: LocalDateTime): List<KepcoHistory>
+
+    @Query("SELECT DISTINCT k.appliedPeriod FROM KepcoHistory k")
+    fun findDistinctByAppliedPeriod(): List<LocalDateTime>
 }

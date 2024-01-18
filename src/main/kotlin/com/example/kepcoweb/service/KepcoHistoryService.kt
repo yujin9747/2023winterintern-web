@@ -7,6 +7,7 @@ import com.example.kepcoweb.dto.TimeLoadDto
 import com.example.kepcoweb.repository.KepcoHistoryRepository
 import com.example.kepcoweb.repository.MonthSeasonHistoryRepository
 import com.example.kepcoweb.repository.TimeLoadHistoryRepository
+import java.time.LocalDate
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
 
@@ -71,6 +72,17 @@ class KepcoHistoryService(
             result[i].wifChanged = current[i].wif != before[i].wif
         }
         return result
+    }
+
+    fun getKepcoHistoryByAppliedPeriod(selectedPeriod: LocalDate): List<KepcoDto> {
+        return repository.findAllByAppliedPeriod(LocalDateTime.of(selectedPeriod.year, selectedPeriod.month, selectedPeriod.dayOfMonth, 0, 0, 0))
+            .map {
+                DtoUtils.createKepcoDto(it)
+            }
+    }
+
+    fun getAppliedPeriodsDistinct(): List<LocalDateTime> {
+        return repository.findDistinctByAppliedPeriod()
     }
 
     fun getFutureKepcoTable(today: LocalDateTime): List<KepcoDto> {
