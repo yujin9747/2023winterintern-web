@@ -148,6 +148,48 @@ class KepcoHistoryController (
         return "kepco_current_before"
     }
 
+    @GetMapping("/current-future")
+    fun getCurrentAndFutureKepcoTable(
+        model: Model,
+        @RequestParam("year") year: Int?,
+        @RequestParam("month") month: Int?,
+        @RequestParam("day") day: Int?
+    ) : String {
+        model.addAttribute("message", "현재 적용중인 요금표와 적용 예정인 요금표 비교 조회")
+
+        // 기준이 될 오늘 날짜 넘기기
+        var today = LocalDateTime.now()
+
+        if (year != null && month != null && day != null){
+            today = LocalDateTime.of(year, month, day, 0, 0, 0)
+        }
+        var kepcoCurrent = service.getCurrentKepcoTable(today)
+        val kepcoFuture = service.getFutureKepcoTable(today)
+
+        // 해당 요금표가 적용된지 며칠이 지났는지 D+ 계산하기
+        if (kepcoCurrent.isEmpty()) {
+            model.addAttribute("message", "현재 날짜보다 미래에 적용 예정인 요금표가 없습니다.")
+            model.addAttribute("today", today.toLocalDate())
+            return "kepco_error"
+        }
+        val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
+
+        if (kepcoFuture.isEmpty()) {
+            model.addAttribute("message", "현재 적용중인 요금표와 비교할 적용 예정인 요금표가 없습니다.")
+            model.addAttribute("today", today.toLocalDate())
+            return "kepco_error"
+        }
+
+        kepcoCurrent = service.checkChanged(kepcoCurrent, kepcoFuture)
+
+        model.addAttribute("kepcoCurrent", kepcoCurrent)
+        model.addAttribute("kepcoFuture", kepcoFuture)
+        model.addAttribute("today", today.toLocalDate())
+        model.addAttribute("days", days)
+        return "kepco_current_future"
+    }
+
+
     internal fun LocalDateTime.differentDays(from: LocalDateTime): Long {
         return abs(ChronoUnit.DAYS.between(this, from))
     }
