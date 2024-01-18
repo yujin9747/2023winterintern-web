@@ -4,6 +4,8 @@ import com.example.kepcoweb.dto.KepcoDto
 import com.example.kepcoweb.service.KepcoHistoryService
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -69,7 +71,8 @@ class KepcoHistoryController (
         model.addAttribute("message", "현재 날짜 기준 적용되는 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
-        var today = LocalDateTime.now()
+        var today = getToday()
+        print("오늘: $today")
 
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
@@ -102,7 +105,7 @@ class KepcoHistoryController (
         model.addAttribute("message", "현재 날짜 이후에 적용될 요금표 조회")
 
         // 기준이 될 오늘 날짜 넘기기
-        var today = LocalDateTime.now()
+        var today = getToday()
 
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
@@ -133,7 +136,7 @@ class KepcoHistoryController (
         model.addAttribute("message", "현재 적용중인 요금표와 이전에 적용된 요금표 비교 조회")
 
         // 기준이 될 오늘 날짜 넘기기
-        var today = LocalDateTime.now()
+        var today = getToday()
 
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
@@ -174,7 +177,7 @@ class KepcoHistoryController (
         model.addAttribute("message", "현재 적용중인 요금표와 적용 예정인 요금표 비교 조회")
 
         // 기준이 될 오늘 날짜 넘기기
-        var today = LocalDateTime.now()
+        var today = getToday()
 
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
@@ -208,5 +211,9 @@ class KepcoHistoryController (
 
     internal fun LocalDateTime.differentDays(from: LocalDateTime): Long {
         return abs(ChronoUnit.DAYS.between(this, from))
+    }
+
+    internal fun getToday(): LocalDateTime {
+        return ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime()
     }
 }
