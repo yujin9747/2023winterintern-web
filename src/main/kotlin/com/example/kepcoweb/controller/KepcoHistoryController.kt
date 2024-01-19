@@ -70,9 +70,7 @@ class KepcoHistoryController (
     ): String {
         model.addAttribute("message", "현재 날짜 기준 적용되는 요금표 조회")
 
-        // 기준이 될 오늘 날짜 넘기기
         var today = getToday()
-        print("오늘: $today")
 
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
@@ -112,7 +110,6 @@ class KepcoHistoryController (
         }
         val kepcoFuture = service.getFutureKepcoTable(today)
 
-        // 해당 요금표가 적용된지 며칠이 지났는지 D- 계산하기
         if (kepcoFuture.isEmpty()) {
             model.addAttribute("message", "현재 날짜보다 미래에 적용될 요금표가 없습니다.")
             model.addAttribute("today", today.toLocalDate())
@@ -144,7 +141,6 @@ class KepcoHistoryController (
         var kepcoCurrent = service.getCurrentKepcoTable(today)
         val kepcoBefore = service.getBeforeKepcoTable(today)
 
-        // 해당 요금표가 적용된지 며칠이 지났는지 D+ 계산하기
         if (kepcoCurrent.isEmpty()) {
             model.addAttribute("message", "현재 날짜보다 이전에 적용된 요금표가 없습니다.")
             model.addAttribute("today", today.toLocalDate())
@@ -185,7 +181,6 @@ class KepcoHistoryController (
         var kepcoCurrent = service.getCurrentKepcoTable(today)
         val kepcoFuture = service.getFutureKepcoTable(today)
 
-        // 해당 요금표가 적용된지 며칠이 지났는지 D+ 계산하기
         if (kepcoCurrent.isEmpty()) {
             model.addAttribute("message", "현재 날짜보다 미래에 적용 예정인 요금표가 없습니다.")
             model.addAttribute("today", today.toLocalDate())
