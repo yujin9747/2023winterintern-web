@@ -1,6 +1,8 @@
 package com.example.kepcoweb.controller
 
 import com.example.kepcoweb.dto.KepcoDto
+import com.example.kepcoweb.dto.MonthSeasonDto
+import com.example.kepcoweb.dto.TimeLoadDto
 import com.example.kepcoweb.service.KepcoHistoryService
 import com.example.kepcoweb.service.KepcoService
 import java.time.LocalDate
@@ -28,12 +30,12 @@ class KepcoHistoryController (
     ): String {
         model.addAttribute("message", "electric_rates_history 테이블 정보 조회 페이지")
 
-        var kepcoHistory: List<KepcoDto>
-        if (selectedPeriod == null) {
-            kepcoHistory = service.getKepcoHistory()
-        }
-        else {
-            kepcoHistory = service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
+        val kepcoHistory: List<KepcoDto>
+        try {
+            kepcoHistory = getFilteredKepcoHistory(selectedPeriod)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
+            return "kepco_error"
         }
 
         val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
@@ -48,7 +50,13 @@ class KepcoHistoryController (
     fun getTimeLoadHistory(model: Model): String {
         model.addAttribute("message", "electric_rates_timeLoad_history 테이블 정보 조회 페이지")
 
-        val timeLoadHistory = service.getTimeLoadHistory()
+        var timeLoadHistory: List<TimeLoadDto>
+        try {
+            timeLoadHistory = getTimeLoad()
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
+            return "kepco_error"
+        }
         model.addAttribute("timeLoad", timeLoadHistory)
         return "kepco_timeLoad"
     }
@@ -57,12 +65,17 @@ class KepcoHistoryController (
     fun getMonthSeasonHistory(model: Model): String {
         model.addAttribute("message", "electric_rates_month_season_history 테이블 정보 조회 페이지")
 
-        val monthSeason = service.getMonthSeasonHistory()
+        var monthSeason: List<MonthSeasonDto>
+        try {
+            monthSeason = getMonthSeason()
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
+            return "kepco_error"
+        }
         model.addAttribute("monthSeason", monthSeason)
         return "kepco_monthSeason"
     }
 
-    // today는 여러 상황을 보여주기 위해 임의로 넣은 것
     @GetMapping("/current")
     fun getCurrentKepcoTable(
         model: Model,
@@ -78,10 +91,11 @@ class KepcoHistoryController (
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
         }
 
-        val kepcoCurrent = service.getCurrentKepcoTable(today)
-
-        if (kepcoCurrent.isEmpty()) {
-            model.addAttribute("message", "현재 날짜보다 이전에 적용된 요금표가 없습니다.")
+        val kepcoCurrent: List<KepcoDto>
+        try {
+            kepcoCurrent = getCurrentKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
             model.addAttribute("today", today.toLocalDate())
             return "kepco_error"
         }
@@ -110,13 +124,16 @@ class KepcoHistoryController (
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
         }
-        val kepcoFuture = service.getFutureKepcoTable(today)
 
-        if (kepcoFuture.isEmpty()) {
-            model.addAttribute("message", "현재 날짜보다 미래에 적용될 요금표가 없습니다.")
+        var kepcoFuture: List<KepcoDto>
+        try {
+            kepcoFuture = getFutureKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
             model.addAttribute("today", today.toLocalDate())
             return "kepco_error"
         }
+
         val days = today.differentDays(kepcoFuture[0].appliedPeriod!!)
 
         model.addAttribute("kepcoFuture", kepcoFuture)
@@ -140,21 +157,26 @@ class KepcoHistoryController (
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
         }
-        var kepcoCurrent = service.getCurrentKepcoTable(today)
-        val kepcoBefore = service.getBeforeKepcoTable(today)
 
-        if (kepcoCurrent.isEmpty()) {
-            model.addAttribute("message", "현재 날짜보다 이전에 적용된 요금표가 없습니다.")
+        var kepcoCurrent: List<KepcoDto>
+        try {
+            kepcoCurrent = getCurrentKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
             model.addAttribute("today", today.toLocalDate())
             return "kepco_error"
         }
+
+        var kepcoBefore: List<KepcoDto>
+        try {
+            kepcoBefore = getBeforeKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
+            model.addAttribute("today", today.toLocalDate())
+            return "kepco_error"
+        }
+
         val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
-
-        if (kepcoBefore.isEmpty()) {
-            model.addAttribute("message", "현재 적용중인 요금표와 비교할 이전에 적용된 요금표가 없습니다.")
-            model.addAttribute("today", today.toLocalDate())
-            return "kepco_error"
-        }
 
         kepcoCurrent = service.checkChanged(kepcoCurrent, kepcoBefore)
 
@@ -180,18 +202,23 @@ class KepcoHistoryController (
         if (year != null && month != null && day != null){
             today = LocalDateTime.of(year, month, day, 0, 0, 0)
         }
-        var kepcoCurrent = service.getCurrentKepcoTable(today)
-        val kepcoFuture = service.getFutureKepcoTable(today)
 
-        if (kepcoCurrent.isEmpty()) {
-            model.addAttribute("message", "현재 날짜보다 미래에 적용 예정인 요금표가 없습니다.")
+        var kepcoCurrent: List<KepcoDto>
+        try {
+            kepcoCurrent = getCurrentKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
             model.addAttribute("today", today.toLocalDate())
             return "kepco_error"
         }
+
         val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
 
-        if (kepcoFuture.isEmpty()) {
-            model.addAttribute("message", "현재 적용중인 요금표와 비교할 적용 예정인 요금표가 없습니다.")
+        var kepcoFuture: List<KepcoDto>
+        try {
+            kepcoFuture = getFutureKepcoTable(today)
+        } catch (e: Exception) {
+            model.addAttribute("message", e.message)
             model.addAttribute("today", today.toLocalDate())
             return "kepco_error"
         }
@@ -214,31 +241,17 @@ class KepcoHistoryController (
 
         var kepco: List<KepcoDto>
         try {
-            kepco = kepcoService.getKepco()
-            if (kepco.isEmpty()) {
-                model.addAttribute("message", "electric_rates 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-                return "kepco_error"
-            }
+            kepco = getKepco()
         } catch (e: Exception) {
-            model.addAttribute("message", "electric_rates 테이블이 존재하지 않습니다.")
+            model.addAttribute("message", e.message)
             return "kepco_error"
         }
 
         var kepcoHistory: List<KepcoDto>
         try {
-            if (selectedPeriod == null) {
-                kepcoHistory = service.getKepcoHistory()
-            }
-            else {
-                kepcoHistory = service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
-            }
-
-            if (kepcoHistory.isEmpty()) {
-                model.addAttribute("message", "electric_rates_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-                return "kepco_error"
-            }
+            kepcoHistory = getFilteredKepcoHistory(selectedPeriod)
         } catch (e: Exception) {
-            model.addAttribute("message", "electric_rates_history 테이블이 존재하지 않습니다.")
+            model.addAttribute("message", e.message)
             return "kepco_error"
         }
 
@@ -259,5 +272,101 @@ class KepcoHistoryController (
 
     internal fun getToday(): LocalDateTime {
         return ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime()
+    }
+
+    internal fun getFilteredKepcoHistory(selectedPeriod: LocalDate?): List<KepcoDto> {
+        var kepcoHistory: List<KepcoDto>
+        try {
+            kepcoHistory = if (selectedPeriod == null) {
+                service.getKepcoHistory()
+            } else {
+                service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
+            }
+
+            if (kepcoHistory.isEmpty()) {
+                throw Exception("electric_rates_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+        return kepcoHistory
+    }
+
+    internal fun getKepco(): List<KepcoDto> {
+        var kepco: List<KepcoDto>
+        try {
+            kepco = kepcoService.getKepco()
+            if (kepco.isEmpty()) {
+                throw Exception("electric_rates 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates 테이블이 존재하지 않습니다.")
+        }
+        return kepco
+    }
+
+    internal fun getCurrentKepcoTable(today: LocalDateTime): List<KepcoDto> {
+        var kepcoCurrent: List<KepcoDto>
+        try {
+            kepcoCurrent = service.getCurrentKepcoTable(today)
+            if (kepcoCurrent.isEmpty()) {
+                throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+        return kepcoCurrent
+    }
+
+    internal fun getFutureKepcoTable(today: LocalDateTime): List<KepcoDto> {
+        var kepcoFuture: List<KepcoDto>
+        try {
+            kepcoFuture = service.getFutureKepcoTable(today)
+            if (kepcoFuture.isEmpty()) {
+                throw Exception("현재 날짜보다 미래에 적용될 요금표가 없습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+        return kepcoFuture
+    }
+
+    internal fun getBeforeKepcoTable(today: LocalDateTime): List<KepcoDto> {
+        var kepcoBefore: List<KepcoDto>
+        try {
+            kepcoBefore = service.getBeforeKepcoTable(today)
+            if (kepcoBefore.isEmpty()) {
+                throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+        return kepcoBefore
+    }
+
+    internal fun getTimeLoad(): List<TimeLoadDto> {
+        var timeLoad: List<TimeLoadDto>
+        try {
+            timeLoad = service.getTimeLoadHistory()
+            if (timeLoad.isEmpty()) {
+                throw Exception("electric_rates_timeLoad_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_timeLoad_history 테이블이 존재하지 않습니다.")
+        }
+        return timeLoad
+    }
+
+    internal fun getMonthSeason(): List<MonthSeasonDto> {
+        var monthSeason: List<MonthSeasonDto>
+        try {
+            monthSeason = service.getMonthSeasonHistory()
+            if (monthSeason.isEmpty()) {
+                throw Exception("electric_rates_timeLoad_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+            }
+        } catch (e: Exception) {
+            throw Exception("electric_rates_timeLoad_history 테이블이 존재하지 않습니다.")
+        }
+        return monthSeason
     }
 }
