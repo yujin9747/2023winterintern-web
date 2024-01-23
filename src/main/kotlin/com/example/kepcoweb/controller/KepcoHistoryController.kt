@@ -2,6 +2,7 @@ package com.example.kepcoweb.controller
 
 import com.example.kepcoweb.dto.KepcoDto
 import com.example.kepcoweb.service.KepcoHistoryService
+import com.example.kepcoweb.service.KepcoService
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -17,7 +18,8 @@ import kotlin.math.abs
 @Controller
 @RequestMapping("/kepco-history")
 class KepcoHistoryController (
-    val service: KepcoHistoryService
+    val service: KepcoHistoryService,
+    val kepcoService: KepcoService
 ){
     @GetMapping
     fun getKepcoHistory(
@@ -201,6 +203,53 @@ class KepcoHistoryController (
         model.addAttribute("today", today.toLocalDate())
         model.addAttribute("days", days)
         return "kepco_current_future"
+    }
+
+    @GetMapping("/compare-current")
+    fun getCurrentCompareResult(
+        model: Model,
+        selectedPeriod: LocalDate?
+    ): String {
+        model.addAttribute("message", "electric_rates와 electric_rates_history 테이블 비교 조회")
+
+        var kepco: List<KepcoDto>
+        try {
+            kepco = kepcoService.getKepco()
+            if (kepco.isEmpty()) {
+                model.addAttribute("message", "electric_rates 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+                return "kepco_error"
+            }
+        } catch (e: Exception) {
+            model.addAttribute("message", "electric_rates 테이블이 존재하지 않습니다.")
+            return "kepco_error"
+        }
+
+        var kepcoHistory: List<KepcoDto>
+        try {
+            if (selectedPeriod == null) {
+                kepcoHistory = service.getKepcoHistory()
+            }
+            else {
+                kepcoHistory = service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
+            }
+
+            if (kepcoHistory.isEmpty()) {
+                model.addAttribute("message", "electric_rates_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+                return "kepco_error"
+            }
+        } catch (e: Exception) {
+            model.addAttribute("message", "electric_rates_history 테이블이 존재하지 않습니다.")
+            return "kepco_error"
+        }
+
+        val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
+
+        model.addAttribute("kepco", kepco)
+        model.addAttribute("kepcoHistory", kepcoHistory)
+        model.addAttribute("appliedPeriods", appliedPeriodSet)
+        model.addAttribute("selectedPeriod", selectedPeriod)
+
+        return "kepco_compare"
     }
 
 
