@@ -33,6 +33,7 @@ class DtoUtils {
             faf = it.faf,
             wif = it.wif,
             createdAt = it.createdAt,
+            updatedAt = it.updatedAt,
             appliedPeriod = it.appliedPeriod
         )
 
@@ -42,6 +43,7 @@ class DtoUtils {
             hour = it.hour,
             loadVal = it.loadVal,
             createdAt = it.createdAt,
+            updatedAt = it.updatedAt,
             appliedPeriod = it.appliedPeriod
         )
 
@@ -51,6 +53,7 @@ class DtoUtils {
             hour = it.hour,
             loadVal = it.loadVal,
             createdAt = it.createdAt,
+            updatedAt = it.updatedAt,
             appliedPeriod = it.appliedPeriod
         )
 
@@ -59,6 +62,7 @@ class DtoUtils {
             month = it.month,
             season = it.season,
             createdAt = it.createdAt,
+            updatedAt = it.updatedAt,
             appliedPeriod = it.appliedPeriod
         )
 
@@ -68,6 +72,7 @@ class DtoUtils {
             month = it.month,
             season = it.season,
             createdAt = it.createdAt,
+            updatedAt= it.updatedAt,
             appliedPeriod = it.appliedPeriod
         )
     }

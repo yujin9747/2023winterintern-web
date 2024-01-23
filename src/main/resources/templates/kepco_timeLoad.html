@@ -17,7 +17,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Season</th> <th>Hour</th> <th>LoadVal</th> <th>createdAt</th> <th>appliedPeriod</th>
+                            <th>Season</th> <th>Hour</th> <th>LoadVal</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -27,6 +27,7 @@
                             <td th:text="${t.hour}"></td>
                             <td th:text="${t.loadVal}"></td>
                             <td th:text="${t.createdAt}"></td>
+                            <td th:text="${t.updatedAt}"></td>
                             <td th:text="${t.appliedPeriod}"></td>
                         </tr>
                         </tbody>

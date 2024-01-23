@@ -8,5 +8,6 @@ class TimeLoadDto (
     val hour: Int? = null,
     val loadVal: Int? = null,
     val createdAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime? = null,
     val appliedPeriod: LocalDateTime? = null,
 )

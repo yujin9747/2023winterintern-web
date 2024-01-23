@@ -7,5 +7,6 @@ class MonthSeasonDto (
     val month: Int? = null,
     val season: String? = null,
     val createdAt: LocalDateTime? = null,
+    val updatedAt: LocalDateTime? = null,
     val appliedPeriod: LocalDateTime? = null,
 )

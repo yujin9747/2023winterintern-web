@@ -28,4 +28,8 @@ class TimeLoadHistory {
     @CreationTimestamp
     @Column(name = "createdAt", nullable = false, columnDefinition = "datetime(6)")
     var createdAt: LocalDateTime? = LocalDateTime.now()
+
+    @UpdateTimestamp
+    @Column(name = "updatedAt", nullable = false, columnDefinition = "datetime(6)")
+    var updatedAt: LocalDateTime? = LocalDateTime.now()
 }

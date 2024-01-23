@@ -17,7 +17,7 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Month</th> <th>Season</th> <th>createdAt</th> <th>appliedPeriod</th>
+                            <th>Month</th> <th>Season</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -26,6 +26,7 @@
                             <td th:text="${m.month}"></td>
                             <td th:text="${m.season}"></td>
                             <td th:text="${m.createdAt}"></td>
+                            <td th:text="${m.updatedAt}"></td>
                             <td th:text="${m.appliedPeriod}"></td>
                         </tr>
                         </tbody>

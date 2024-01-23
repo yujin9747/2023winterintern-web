@@ -3,6 +3,7 @@ package com.example.kepcoweb.domain
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 
 @Entity
 @Table(name = "electric_rates_history")
@@ -41,6 +42,10 @@ class KepcoHistory {
 
     @Column(name = "appliedPeriod", columnDefinition = "datetime(6)")
     var appliedPeriod: LocalDateTime? = null
+
+    @UpdateTimestamp
+    @Column(name = "updatedAt", nullable = false, columnDefinition = "datetime(6)")
+    var updatedAt: LocalDateTime? = LocalDateTime.now()
 
     @CreationTimestamp
     @Column(name = "createdAt", nullable = false, columnDefinition = "datetime(6)")
