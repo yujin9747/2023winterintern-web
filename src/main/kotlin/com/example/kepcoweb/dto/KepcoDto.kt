@@ -27,5 +27,6 @@ class KepcoDto (
     var loadValChanged: Boolean? = false,
     var sufChanged: Boolean? = false,
     var fafChanged: Boolean? = false,
-    var wifChanged: Boolean? = false
+    var wifChanged: Boolean? = false,
+    var periodChanged: Boolean? = false
 )

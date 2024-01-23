@@ -257,7 +257,10 @@ class KepcoHistoryController (
 
         val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
 
-        if (selectedPeriod != null) kepco = service.checkDifference(kepco, kepcoHistory)
+        if (selectedPeriod != null) {
+            kepco = service.checkDifference(kepco, kepcoHistory)
+            kepco = service.checkAppliedPeriodDifference(kepco, kepcoHistory)
+        }
 
         model.addAttribute("kepco", kepco)
         model.addAttribute("kepcoHistory", kepcoHistory)

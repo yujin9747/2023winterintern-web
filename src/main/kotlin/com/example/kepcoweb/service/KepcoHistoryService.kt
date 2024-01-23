@@ -74,6 +74,14 @@ class KepcoHistoryService(
         return result
     }
 
+    fun checkAppliedPeriodDifference(rates: List<KepcoDto>, ratesHistory: List<KepcoDto>): List<KepcoDto> {
+
+        for (i in rates.indices) {
+            rates[i].periodChanged = rates[i].appliedPeriod != ratesHistory[i].appliedPeriod
+        }
+        return rates
+    }
+
     fun getKepcoHistoryByAppliedPeriod(selectedPeriod: LocalDate): List<KepcoDto> {
         return repository.findAllByAppliedPeriod(LocalDateTime.of(selectedPeriod.year, selectedPeriod.month, selectedPeriod.dayOfMonth, 0, 0, 0))
             .map {

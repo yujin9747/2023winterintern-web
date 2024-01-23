@@ -48,7 +48,7 @@
                             <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
                             <td th:text="${k.createdAt}"></td>
                             <td th:text="${k.updatedAt}"></td>
-                            <td th:text="${k.appliedPeriod}"></td>
+                            <td th:text="${k.appliedPeriod}" th:style="${k.periodChanged ? 'color: red;' : 'color: black;'}"></td>
                         </tr>
                         </tbody>
                     </table>
