@@ -25,17 +25,8 @@
                 <div><button onclick="location.href='/'">뒤로가기</button></div>
                 <h1 th:text="${message}"></h1>
 
-                <label for="appliedPeriods">적용일자 선택:</label>
-                <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
-                    <p>
-                        <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
-                    </p>
-                    <p th:each="a : ${appliedPeriods}">
-                        <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
-                    </p>
-                </select>
-
                 <div>
+                    <h4>electric_rates 테이블</h4>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -46,15 +37,15 @@
                         <tbody>
                         <tr th:each="k : ${kepco}">
                             <td th:text="${k.id}"></td>
-                            <td th:text="${k.useVal}"></td>
-                            <td th:text="${k.gb1}"></td>
-                            <td th:text="${k.gb2}"></td>
-                            <td th:text="${k.selVal}"></td>
-                            <td th:text="${k.baseFee}"></td>
-                            <td th:text="${k.loadVal}"></td>
-                            <td th:text="${k.suf}"></td>
-                            <td th:text="${k.faf}"></td>
-                            <td th:text="${k.wif}"></td>
+                            <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
                             <td th:text="${k.createdAt}"></td>
                             <td th:text="${k.updatedAt}"></td>
                             <td th:text="${k.appliedPeriod}"></td>
@@ -64,6 +55,16 @@
                 </div>
 
                 <div>
+                    <h4>electric_rates_history 테이블</h4>
+                    <label for="appliedPeriods">적용일자 선택:</label>
+                    <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
+                        <p>
+                            <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
+                        </p>
+                        <p th:each="a : ${appliedPeriods}">
+                            <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
+                        </p>
+                    </select>
                     <table class="table table-striped">
                         <thead>
                         <tr>

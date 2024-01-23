@@ -178,7 +178,7 @@ class KepcoHistoryController (
 
         val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
 
-        kepcoCurrent = service.checkChanged(kepcoCurrent, kepcoBefore)
+        kepcoCurrent = service.checkDifference(kepcoCurrent, kepcoBefore)
 
         model.addAttribute("kepcoCurrent", kepcoCurrent)
         model.addAttribute("kepcoBefore", kepcoBefore)
@@ -223,7 +223,7 @@ class KepcoHistoryController (
             return "kepco_error"
         }
 
-        kepcoCurrent = service.checkChanged(kepcoCurrent, kepcoFuture)
+        kepcoCurrent = service.checkDifference(kepcoCurrent, kepcoFuture)
 
         model.addAttribute("kepcoCurrent", kepcoCurrent)
         model.addAttribute("kepcoFuture", kepcoFuture)
@@ -256,6 +256,8 @@ class KepcoHistoryController (
         }
 
         val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
+
+        if (selectedPeriod != null) kepco = service.checkDifference(kepco, kepcoHistory)
 
         model.addAttribute("kepco", kepco)
         model.addAttribute("kepcoHistory", kepcoHistory)

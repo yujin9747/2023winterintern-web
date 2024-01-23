@@ -57,7 +57,7 @@ class KepcoHistoryService(
             }
     }
 
-    fun checkChanged(current: List<KepcoDto>, before: List<KepcoDto>): List<KepcoDto> {
+    fun checkDifference(current: List<KepcoDto>, before: List<KepcoDto>): List<KepcoDto> {
         var result = current
 
         for (i in current.indices) {
