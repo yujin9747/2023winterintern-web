@@ -67,11 +67,12 @@ class KepcoController (
         var kepco: List<KepcoDto>
         try {
             kepco = service.getKepco()
-            if (kepco.isEmpty()) {
-                throw Exception("electric_rates 테이블이 존재하나, 데이터가 없습니다")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates 테이블이 존재하지 않습니다")
+        }
+
+        if (kepco.isEmpty()) {
+            throw Exception("electric_rates 테이블이 존재하나, 데이터가 없습니다")
         }
         return kepco
     }
@@ -80,24 +81,27 @@ class KepcoController (
         var timeLoad: List<TimeLoadDto>
         try {
             timeLoad = service.getTimeLoad()
-            if (timeLoad.isEmpty()) {
-                throw Exception("electric_rates_timeLoad 테이블이 존재하나, 데이터가 없습니다")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_timeLoad 테이블이 존재하지 않습니다")
+        }
+
+        if (timeLoad.isEmpty()) {
+            throw Exception("electric_rates_timeLoad 테이블이 존재하나, 데이터가 없습니다")
         }
         return timeLoad
     }
 
     internal fun getMonthSeason(): List<MonthSeasonDto> {
         var monthSeason: List<MonthSeasonDto>
+
         try {
             monthSeason = service.getMonthSeason()
-            if (monthSeason.isEmpty()) {
-                throw Exception("electric_rates_month_season 테이블이 존재하나, 데이터가 없습니다")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_month_season 테이블이 존재하지 않습니다")
+        }
+
+        if (monthSeason.isEmpty()) {
+            throw Exception("electric_rates_month_season 테이블이 존재하나, 데이터가 없습니다")
         }
         return monthSeason
     }

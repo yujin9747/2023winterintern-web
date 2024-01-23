@@ -275,19 +275,18 @@ class KepcoHistoryController (
     }
 
     internal fun getFilteredKepcoHistory(selectedPeriod: LocalDate?): List<KepcoDto> {
-        var kepcoHistory: List<KepcoDto>
-        try {
-            kepcoHistory = if (selectedPeriod == null) {
+        var kepcoHistory: List<KepcoDto> = try {
+            if (selectedPeriod == null) {
                 service.getKepcoHistory()
             } else {
                 service.getKepcoHistoryByAppliedPeriod(selectedPeriod)
             }
-
-            if (kepcoHistory.isEmpty()) {
-                throw Exception("electric_rates_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+
+        if (kepcoHistory.isEmpty()) {
+            throw Exception("electric_rates_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
         }
         return kepcoHistory
     }
@@ -296,24 +295,26 @@ class KepcoHistoryController (
         var kepco: List<KepcoDto>
         try {
             kepco = kepcoService.getKepco()
-            if (kepco.isEmpty()) {
-                throw Exception("electric_rates 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates 테이블이 존재하지 않습니다.")
+        }
+        if (kepco.isEmpty()) {
+            throw Exception("electric_rates 테이블이 존재하나, 데이터가 존재하지 않습니다.")
         }
         return kepco
     }
 
     internal fun getCurrentKepcoTable(today: LocalDateTime): List<KepcoDto> {
         var kepcoCurrent: List<KepcoDto>
+
         try {
             kepcoCurrent = service.getCurrentKepcoTable(today)
-            if (kepcoCurrent.isEmpty()) {
-                throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+
+        if (kepcoCurrent.isEmpty()) {
+            throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
         }
         return kepcoCurrent
     }
@@ -322,24 +323,27 @@ class KepcoHistoryController (
         var kepcoFuture: List<KepcoDto>
         try {
             kepcoFuture = service.getFutureKepcoTable(today)
-            if (kepcoFuture.isEmpty()) {
-                throw Exception("현재 날짜보다 미래에 적용될 요금표가 없습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+
+        if (kepcoFuture.isEmpty()) {
+            throw Exception("현재 날짜보다 미래에 적용될 요금표가 없습니다.")
         }
         return kepcoFuture
     }
 
     internal fun getBeforeKepcoTable(today: LocalDateTime): List<KepcoDto> {
         var kepcoBefore: List<KepcoDto>
+
         try {
             kepcoBefore = service.getBeforeKepcoTable(today)
-            if (kepcoBefore.isEmpty()) {
-                throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_history 테이블이 존재하지 않습니다.")
+        }
+
+        if (kepcoBefore.isEmpty()) {
+            throw Exception("현재 날짜보다 이전에 적용된 요금표가 없습니다.")
         }
         return kepcoBefore
     }
@@ -348,25 +352,28 @@ class KepcoHistoryController (
         var timeLoad: List<TimeLoadDto>
         try {
             timeLoad = service.getTimeLoadHistory()
-            if (timeLoad.isEmpty()) {
-                throw Exception("electric_rates_timeLoad_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-            }
         } catch (e: Exception) {
             throw Exception("electric_rates_timeLoad_history 테이블이 존재하지 않습니다.")
+        }
+        if (timeLoad.isEmpty()) {
+            throw Exception("electric_rates_timeLoad_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
         }
         return timeLoad
     }
 
     internal fun getMonthSeason(): List<MonthSeasonDto> {
         var monthSeason: List<MonthSeasonDto>
+
         try {
             monthSeason = service.getMonthSeasonHistory()
-            if (monthSeason.isEmpty()) {
-                throw Exception("electric_rates_timeLoad_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
-            }
         } catch (e: Exception) {
-            throw Exception("electric_rates_timeLoad_history 테이블이 존재하지 않습니다.")
+            throw Exception("electric_rates_month_season_history 테이블이 존재하지 않습니다.")
         }
+
+        if (monthSeason.isEmpty()) {
+            throw Exception("electric_rates_month_season_history 테이블이 존재하나, 데이터가 존재하지 않습니다.")
+        }
+
         return monthSeason
     }
 }
