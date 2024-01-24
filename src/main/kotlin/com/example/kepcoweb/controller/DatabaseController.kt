@@ -22,4 +22,10 @@ class DatabaseController (
         return "redirect:/"
     }
 
+    @GetMapping("/update-current-table")
+    fun updateCurrentTable(): String {
+        service.updateCurrentTable()
+        return "redirect:/"
+    }
+
 }
