@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>2023 winterintern 장유진</title>
+    <script>
+        function dropTables() {
+            location.href = '/drop-tables';
+        }
+    </script>
 </head>
 <body>
     <h1>2023 winterintern 장유진</h1>
@@ -23,6 +28,8 @@
 
     <h3>1/22 중간 보고 이후 추가된 페이지</h3>
     <p>electric_rates 테이블과 electric_rates_history 테이블 비교 조회: <a href="/kepco-history/compare-current">click!</a></p>
+
+    <button onclick="dropTables()">DB의 모든 테이블 drop</button>
 
 </body>
 </html>
