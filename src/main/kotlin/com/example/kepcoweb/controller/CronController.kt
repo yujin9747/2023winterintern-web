@@ -1,6 +1,7 @@
 package com.example.kepcoweb.controller
 
 import com.example.kepcoweb.service.CronService
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,8 +18,10 @@ class CronController (
     }
 
     @GetMapping("/execute-cron2")
-    fun executeCron2(): String {
+    fun executeCron2(request: HttpServletRequest): String {
         service.executeCron2()
-        return "redirect:/"
+
+        val referer = request.getHeader("Referer");
+        return "redirect:$referer"
     }
 }

@@ -16,13 +16,19 @@
                 location.href = '/kepco-history/compare-current?selectedPeriod=' + selectedPeriod;
             }
         }
+
+        function executeCron2() {
+            location.href = '/execute-cron2';
+        }
     </script>
 </head>
 <body>
     <div class="container">
         <div class="row m-5">
             <div class="col-sm">
-                <div><button onclick="location.href='/'">뒤로가기</button></div>
+                <div class="p-3"><button onclick="location.href='/'">뒤로가기</button></div>
+                <div class="p-3"><button onclick="executeCron2()">cron2 실행</button></div>
+
                 <h1 th:text="${message}"></h1>
 
                 <div>
