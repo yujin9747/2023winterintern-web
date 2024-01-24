@@ -70,15 +70,15 @@
                         <tbody>
                         <tr th:each="k : ${kepcoBefore}">
                             <td th:text="${k.id}"></td>
-                            <td th:text="${k.useVal}"></td>
-                            <td th:text="${k.gb1}"></td>
-                            <td th:text="${k.gb2}"></td>
-                            <td th:text="${k.selVal}"></td>
-                            <td th:text="${k.baseFee}"></td>
-                            <td th:text="${k.loadVal}"></td>
-                            <td th:text="${k.suf}"></td>
-                            <td th:text="${k.faf}"></td>
-                            <td th:text="${k.wif}"></td>
+                            <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
+                            <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
                             <td th:text="${k.createdAt}"></td>
                             <td th:text="${k.updatedAt}"></td>
                             <td th:text="${k.appliedPeriod}"></td>

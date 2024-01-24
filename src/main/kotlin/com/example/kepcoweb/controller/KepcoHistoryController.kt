@@ -179,6 +179,19 @@ class KepcoHistoryController (
         val days = today.differentDays(kepcoCurrent[0].appliedPeriod!!)
 
         kepcoCurrent = service.checkDifference(kepcoCurrent, kepcoBefore)
+        // kepcoBefore의 changed 값을 kepcoCurrent 값으로 맞추기
+        for (i in kepcoBefore.indices) {
+            kepcoBefore[i].useValChanged = kepcoCurrent[i].useValChanged
+            kepcoBefore[i].gb1Changed = kepcoCurrent[i].gb1Changed
+            kepcoBefore[i].gb2Changed = kepcoCurrent[i].gb2Changed
+            kepcoBefore[i].selValChanged = kepcoCurrent[i].selValChanged
+            kepcoBefore[i].baseFeeChanged = kepcoCurrent[i].baseFeeChanged
+            kepcoBefore[i].loadValChanged = kepcoCurrent[i].loadValChanged
+            kepcoBefore[i].sufChanged = kepcoCurrent[i].sufChanged
+            kepcoBefore[i].fafChanged = kepcoCurrent[i].fafChanged
+            kepcoBefore[i].wifChanged = kepcoCurrent[i].wifChanged
+        }
+
 
         model.addAttribute("kepcoCurrent", kepcoCurrent)
         model.addAttribute("kepcoBefore", kepcoBefore)
@@ -224,6 +237,18 @@ class KepcoHistoryController (
         }
 
         kepcoCurrent = service.checkDifference(kepcoCurrent, kepcoFuture)
+        // kepcoFuture의 changed 값을 kepcoCurrent 값으로 맞추기
+        for(i in kepcoFuture.indices) {
+            kepcoFuture[i].useValChanged = kepcoCurrent[i].useValChanged
+            kepcoFuture[i].gb1Changed = kepcoCurrent[i].gb1Changed
+            kepcoFuture[i].gb2Changed = kepcoCurrent[i].gb2Changed
+            kepcoFuture[i].selValChanged = kepcoCurrent[i].selValChanged
+            kepcoFuture[i].baseFeeChanged = kepcoCurrent[i].baseFeeChanged
+            kepcoFuture[i].loadValChanged = kepcoCurrent[i].loadValChanged
+            kepcoFuture[i].sufChanged = kepcoCurrent[i].sufChanged
+            kepcoFuture[i].fafChanged = kepcoCurrent[i].fafChanged
+            kepcoFuture[i].wifChanged = kepcoCurrent[i].wifChanged
+        }
 
         model.addAttribute("kepcoCurrent", kepcoCurrent)
         model.addAttribute("kepcoFuture", kepcoFuture)
@@ -260,6 +285,19 @@ class KepcoHistoryController (
         if (selectedPeriod != null) {
             kepco = service.checkDifference(kepco, kepcoHistory)
             kepco = service.checkAppliedPeriodDifference(kepco, kepcoHistory)
+        }
+
+        for (i in kepcoHistory.indices) {
+            kepcoHistory[i].useValChanged = kepco[i].useValChanged
+            kepcoHistory[i].gb1Changed = kepco[i].gb1Changed
+            kepcoHistory[i].gb2Changed = kepco[i].gb2Changed
+            kepcoHistory[i].selValChanged = kepco[i].selValChanged
+            kepcoHistory[i].baseFeeChanged = kepco[i].baseFeeChanged
+            kepcoHistory[i].loadValChanged = kepco[i].loadValChanged
+            kepcoHistory[i].sufChanged = kepco[i].sufChanged
+            kepcoHistory[i].fafChanged = kepco[i].fafChanged
+            kepcoHistory[i].wifChanged = kepco[i].wifChanged
+            kepcoHistory[i].periodChanged = kepco[i].periodChanged
         }
 
         model.addAttribute("kepco", kepco)
