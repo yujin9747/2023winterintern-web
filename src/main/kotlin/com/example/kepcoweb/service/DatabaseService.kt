@@ -3,6 +3,7 @@ package com.example.kepcoweb.service
 import com.example.kepcoweb.domain.KepcoHistory
 import com.example.kepcoweb.repository.DatabaseRepository
 import com.example.kepcoweb.repository.KepcoHistoryRepository
+import java.time.LocalDate
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -48,5 +49,36 @@ class DatabaseService(
 
         // 변경된 값으로 update
         kepcoHistoryRepository.saveAll(updatedTable20240101)
+    }
+
+    fun insertTomorrowTable() {
+        // 2024-01-01 요금표를 가져와서 값을 변경 후 내일 적용되는 요금표를 삽입한다.
+        val tomorrow = LocalDate.now().plusDays(1)
+
+        var table20240101 =
+            kepcoHistoryRepository.findAllByAppliedPeriod(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+
+        var tomorrowTable = table20240101.map {
+            KepcoHistory().apply {
+                useVal = it.useVal
+                gb1 = it.gb1
+                gb2 = it.gb2
+                selVal = it.selVal
+                baseFee = it.baseFee
+                loadVal = it.loadVal
+                suf = it.suf
+                faf = it.faf
+                wif = it.wif
+                appliedPeriod = LocalDateTime.of(tomorrow.year, tomorrow.month, tomorrow.dayOfMonth, 0, 0, 0)
+            }
+        }
+
+        // 값을 일부 변경
+        tomorrowTable[0].baseFee = 7000
+        tomorrowTable[5].suf = 100.3f
+        tomorrowTable[17].faf = 120.5f
+        tomorrowTable[18].wif = 170.6f
+
+        kepcoHistoryRepository.saveAll(tomorrowTable)
     }
 }

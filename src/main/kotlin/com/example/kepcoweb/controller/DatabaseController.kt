@@ -28,4 +28,10 @@ class DatabaseController (
         return "redirect:/"
     }
 
+    @GetMapping("/insert-tomorrow-table")
+    fun insertTomorrowTable(): String {
+        service.insertTomorrowTable()
+        return "redirect:/"
+    }
+
 }
