@@ -264,6 +264,13 @@ class KepcoHistoryController (
     ): String {
         model.addAttribute("message", "electric_rates와 electric_rates_history 테이블 비교 조회")
 
+        var filteredBy: LocalDate? = null
+        if (selectedPeriod == null) {
+            filteredBy = service.getCurrentAppliedPeriodByTomorrow()?.toLocalDate()
+        }
+        else {
+            filteredBy = selectedPeriod
+        }
         var kepco: List<KepcoDto>
         try {
             kepco = getKepco()
@@ -274,7 +281,7 @@ class KepcoHistoryController (
 
         var kepcoHistory: List<KepcoDto>
         try {
-            kepcoHistory = getFilteredKepcoHistory(selectedPeriod)
+            kepcoHistory = getFilteredKepcoHistory(filteredBy)
         } catch (e: Exception) {
             model.addAttribute("message", e.message)
             return "kepco_error"
@@ -282,7 +289,7 @@ class KepcoHistoryController (
 
         val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
 
-        if (selectedPeriod != null) {
+        if (filteredBy != null) {
             kepco = service.checkDifference(kepco, kepcoHistory)
             kepco = service.checkAppliedPeriodDifference(kepco, kepcoHistory)
         }
@@ -303,7 +310,7 @@ class KepcoHistoryController (
         model.addAttribute("kepco", kepco)
         model.addAttribute("kepcoHistory", kepcoHistory)
         model.addAttribute("appliedPeriods", appliedPeriodSet)
-        model.addAttribute("selectedPeriod", selectedPeriod)
+        model.addAttribute("selectedPeriod", filteredBy)
 
         return "kepco_compare"
     }

@@ -101,4 +101,9 @@ class KepcoHistoryService(
                 DtoUtils.createKepcoDto(it)
             }
     }
+
+    fun getCurrentAppliedPeriodByTomorrow(): LocalDateTime? {
+        val tomorrow = LocalDateTime.now().plusDays(1)
+        return repository.findCurrentAppliedPeriodByTomorrow(tomorrow)?.appliedPeriod
+    }
 }
