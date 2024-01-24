@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 @RequestMapping("/")
@@ -18,10 +19,23 @@ class CronController (
     }
 
     @GetMapping("/execute-cron2")
-    fun executeCron2(request: HttpServletRequest): String {
-        service.executeCron2()
+    fun executeCron2(
+        request: HttpServletRequest,
+        @RequestParam("success", required = false) success: Boolean?,
+        @RequestParam("reason", required = false) reason: String?
+    ): String {
 
-        val referer = request.getHeader("Referer");
-        return "redirect:$referer"
+        var success = true
+        var reason = ""
+        try {
+            service.executeCron2()
+        } catch (e: Exception) {
+            success = false
+            reason = e.message!!
+        }
+
+        val referer = request.getHeader("Referer")
+        val beforeQueryPeram = referer.substringBefore("?")
+        return "redirect:$beforeQueryPeram?success=$success&reason=$reason"
     }
 }

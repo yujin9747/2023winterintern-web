@@ -20,6 +20,19 @@
         function executeCron2() {
             location.href = '/execute-cron2';
         }
+
+        let search = window.location.search;
+        let params = new URLSearchParams(search);
+        let isSuccessed = params.get('success');
+
+        if (isSuccessed === 'true') {
+            alert('cron2를 정상적으로 실행했습니다.');
+        }
+        else if (isSuccessed === 'false') {
+            alert('cron2 실행에 실패했습니다.\n' +
+                '실패 원인: ' + params.get('reason'));
+        }
+
     </script>
 </head>
 <body>
