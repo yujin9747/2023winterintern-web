@@ -81,4 +81,32 @@ class DatabaseService(
 
         kepcoHistoryRepository.saveAll(tomorrowTable)
     }
+
+    fun insertFutureTable() {
+        var table20240101 =
+            kepcoHistoryRepository.findAllByAppliedPeriod(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+
+        var futureTable = table20240101.map {
+            KepcoHistory().apply {
+                useVal = it.useVal
+                gb1 = it.gb1
+                gb2 = it.gb2
+                selVal = it.selVal
+                baseFee = it.baseFee
+                loadVal = it.loadVal
+                suf = it.suf
+                faf = it.faf
+                wif = it.wif
+                appliedPeriod = LocalDateTime.of(2024, 3, 1, 0, 0, 0)
+            }
+        }
+
+        // 값을 일부 변경
+        futureTable[0].baseFee = 8000
+        futureTable[5].suf = 120.3f
+        futureTable[17].faf = 130.5f
+        futureTable[18].wif = 180.6f
+
+        kepcoHistoryRepository.saveAll(futureTable)
+    }
 }

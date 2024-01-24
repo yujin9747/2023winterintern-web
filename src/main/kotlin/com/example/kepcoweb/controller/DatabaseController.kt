@@ -34,4 +34,10 @@ class DatabaseController (
         return "redirect:/"
     }
 
+    @GetMapping("/insert-future-table")
+    fun insertFutureTable(): String {
+        service.insertFutureTable()
+        return "redirect:/"
+    }
+
 }

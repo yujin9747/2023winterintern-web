@@ -15,6 +15,10 @@
         function insertTomorrowTable() {
             location.href = '/insert-tomorrow-table';
         }
+
+        function insertFutureTable() {
+            location.href = '/insert-future-table';
+        }
     </script>
 </head>
 <body>
@@ -37,11 +41,20 @@
     <h3>1/22 중간 보고 이후 추가된 페이지</h3>
     <p>electric_rates 테이블과 electric_rates_history 테이블 비교 조회: <a href="/kepco-history/compare-current">click!</a></p>
 
+    <h5>시나리오 #1</h5>
     <p><button onclick="dropTables()">DB의 모든 테이블 drop</button></p>
+
+    <h5>시나리오 #2</h5>
     <p><button onclick="updateCurrentTable()">2024-01-01 요금표 정보가 일부 변경됨</button></p>
     <p>2024-02-01에 변경된 상황, cron1을 실행해 electric_rates_history 테이블에 반영된 상태로 만든다.</p>
+
+    <h5>시나리오 #3</h5>
     <p><button onclick="insertTomorrowTable()">내일 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
     <p>내일 적용 예정인 요금표가 electric_rates에 반영되는 것을 보기 위한 세팅</p>
+
+    <h5>시나리오 #4</h5>
+    <p><button onclick="insertFutureTable()">2024-03-01 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
+    <p>cron2를 돌렸을 때 2024-03-01 적용 예정인 요금표가 electric_rates에 반영되지 않는 것을 보기 위한 세팅</p>
 
 
 </body>
