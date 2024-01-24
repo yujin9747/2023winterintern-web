@@ -19,6 +19,14 @@
         function insertFutureTable() {
             location.href = '/insert-future-table';
         }
+
+        function executeCron1() {
+            location.href = '/execute-cron1';
+        }
+
+        function executeCron2() {
+            location.href = '/execute-cron2';
+        }
     </script>
 </head>
 <body>
@@ -40,6 +48,12 @@
 
     <h3>1/22 중간 보고 이후 추가된 페이지</h3>
     <p>electric_rates 테이블과 electric_rates_history 테이블 비교 조회: <a href="/kepco-history/compare-current">click!</a></p>
+
+    <h5>cron1 실행하기</h5>
+    <p><button onclick="executeCron1()">cron1 실행</button></p>
+
+    <h5>cron2 실행하기</h5>
+    <p><button onclick="executeCron2()">cron2 실행</button></p>
 
     <h5>시나리오 #1</h5>
     <p><button onclick="dropTables()">DB의 모든 테이블 drop</button></p>
