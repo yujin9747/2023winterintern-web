@@ -41,6 +41,10 @@
             location.href = '/insert-future-table';
         }
 
+        function updateFutureTable() {
+            location.href = '/update-future-table';
+        }
+
         function back1() {
             location.href = '/back1';
         }
@@ -49,65 +53,110 @@
             location.href = '/back2';
         }
 
-
-        // let search = window.location.search;
-        // let params = new URLSearchParams(search);
-        // let isSuccessed = params.get('success');
-        //
-        // if (isSuccessed === 'true') {
-        //     alert('cron이 정상적으로 실행되었습니다.');
-        // }
-        // else if (isSuccessed === 'false') {
-        //     alert('cron 실행에 실패했습니다.\n' +
-        //         '실패 원인: ' + params.get('reason'));
-        // }
-
     </script>
+    <style>
+        .table {
+            font-size: 12px;
+        }
+
+        .scenario {
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-<!--    <div class="container">-->
         <div class="row">
-            <div class="col-sm">
-                <div class="p-3"><button onclick="location.href='/'">뒤로가기</button></div>
-                <div class="p-3"><button onclick="executeCron1()">cron1 실행</button></div>
-                <div class="p-3"><button onclick="executeCron2()">cron2 실행</button></div>
+            <div class="col">
+                <div class="scenario">
+                    <div class="row justify-item-start">
+                        <button class="col" onclick="location.href='/'">뒤로가기</button>
+                        <button class="col" onclick="executeCron1()">cron1 실행</button>
+                        <button class="col" onclick="executeCron2()">cron2 실행</button>
+                    </div>
 
-                <h5>시나리오 #1</h5>
-                <p><button onclick="dropTables()">DB의 모든 테이블 drop</button></p>
+                    <div class="row">
+                        <h5>시나리오 #1</h5>
+                        <p><button onclick="dropTables()">DB의 모든 테이블 drop</button></p>
+                    </div>
 
-                <h5>시나리오 #2</h5>
-                <p><button onclick="insertTomorrowTable()">내일 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
-                <p>내일 적용 예정인 요금표가 electric_rates에 반영되는 것을 보기 위한 세팅</p>
+                    <div class="row">
+                        <div class="col">
+                            <h5>시나리오 #2</h5>
+                            <p><button onclick="insertTomorrowTable()">내일 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
+                            <p>내일 적용 예정인 요금표가 electric_rates에 반영되는 것을 보기 위한 세팅</p>
+                        </div>
+                        <div class="col">
+                            <h5>시나리오 #2 실행 전 단계로 돌아가기</h5>
+                            <p><button onclick="back1()">before #2</button></p>
+                        </div>
+                    </div>
 
-                <h5>시나리오 #3</h5>
-                <p><button onclick="insertFutureTable()">2024-03-01 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
-                <p>cron2를 돌렸을 때 2024-03-01 적용 예정인 요금표가 electric_rates에 반영되지 않는 것을 보기 위한 세팅</p>
+                    <div class="row">
+                        <div class="col">
+                            <h5>시나리오 #3</h5>
+                            <p><button onclick="insertFutureTable()">2024-03-01 적용 예정인 요금표를 electric_rates_history 테이블에 넣기</button></p>
+                            <p>cron2를 돌렸을 때 2024-03-01 적용 예정인 요금표가 electric_rates에 반영되지 않는 것을 보기 위한 세팅</p>
+                        </div>
+                        <div class="col">
+                            <h5>시나리오 #3 실행 전 단계로 돌아가기</h5>
+                            <p><button onclick="back2()">before #3</button></p>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col">
+                            <h5>시나리오 #4</h5>
+                            <p><button onclick="updateCurrentTable()">현재 적용중인 2024-01-01 요금표 정보가 일부 변경됨</button></p>
+                            <p>2024-01-31에 변경된 상황으로 만든다.</p>
+                        </div>
+                        <div class="col">
+                            <h5>시나리오 #4 실행 전 단계로 돌아가기</h5>
+                            <p><button onclick="back1()">before #4</button></p>
+                        </div>
+                    </div>
 
-                <h5>시나리오 #4</h5>
-                <p><button onclick="updateCurrentTable()">2024-01-01 요금표 정보가 일부 변경됨</button></p>
-                <p>2024-01-31에 변경된 상황으로 만든다.</p>
+                    <div class="row">
+                        <div class="col">
+                            <h5>시나리오 #5</h5>
+                            <p><button onclick="updateFutureTable()">미래 적용 예정인 2024-01-01 요금표 정보가 일부 변경됨</button></p>
+                            <p>2023-12-04에 변경된 상황으로 만든다.</p>
+                        </div>
+                        <div class="col">
+                            <h5>시나리오 #5 실행 전 단계로 돌아가기</h5>
+                            <p><button onclick="back1()">before #5</button></p>
+                        </div>
+                    </div>
 
-
-                <h5>시나리오 #2 실행 전 단계로 돌아가기</h5>
-                <p><button onclick="back1()">before #2</button></p>
-
-                <h5>시나리오 #3 실행 전 단계로 돌아가기</h5>
-                <p><button onclick="back2()">before #3</button></p>
-
-                <h5>시나리오 #4 실행 전 단계로 돌아가기</h5>
-                <p><button onclick="back1()">before #4</button></p>
+                </div>
 
 
                 <h1 th:text="${message}"></h1>
                 <h3 th:text="${existRates}"></h3>
                 <h3 th:text="${existHistory}"></h3>
 
-                <div class="row overflow-scroll table-responsive" style="height: 700px">
-                    <div class="col-sm" style="width: 700px">
+                <div class="row">
+                    <div class="col">
+                        <h4>electric_rates 테이블</h4>
+                    </div>
+                    <div class="col">
+                        <h4>electric_rates_history 테이블</h4>
+                        <label for="appliedPeriods">적용일자 선택:</label>
+                        <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
+                            <p>
+                                <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
+                            </p>
+                            <p th:each="a : ${appliedPeriods}">
+                                <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
+                            </p>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row overflow-scroll table-responsive mw-100" style="height: 700px">
+                    <div class="col">
                         <div>
-                            <h4>electric_rates 테이블</h4>
-                            <table class="table table-striped">
+                            <table class="table table-striped w-40">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -134,19 +183,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-sm" style="width: 700px">
+                    <div class="col">
                         <div>
-                            <h4>electric_rates_history 테이블</h4>
-                            <label for="appliedPeriods">적용일자 선택:</label>
-                            <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
-                                <p>
-                                    <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
-                                </p>
-                                <p th:each="a : ${appliedPeriods}">
-                                    <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
-                                </p>
-                            </select>
-                            <table class="table table-striped">
+                            <table class="table table-striped w-40">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -176,6 +215,5 @@
                 </div>
             </div>
         </div>
-<!--    </div>-->
 </body>
 </html>

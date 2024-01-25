@@ -42,6 +42,15 @@ class DatabaseController (
         return "redirect:$beforeQueryPeram"
     }
 
+    @GetMapping("/update-future-table")
+    fun updateFutureTable(request: HttpServletRequest): String {
+        service.updateFutureTable()
+
+        val referer = request.getHeader("Referer")
+        val beforeQueryPeram = referer.substringBefore("?")
+        return "redirect:$beforeQueryPeram"
+    }
+
     @GetMapping("/insert-tomorrow-table")
     fun insertTomorrowTable(request: HttpServletRequest): String {
         service.insertTomorrowTable()

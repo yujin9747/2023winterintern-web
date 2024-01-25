@@ -117,5 +117,4 @@ class DatabaseRepository (
     fun insertDefaultHistory() {
         em.createNativeQuery(dumppedQuery).executeUpdate()
     }
-
 }

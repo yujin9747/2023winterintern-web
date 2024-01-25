@@ -3,6 +3,7 @@ package com.example.kepcoweb.service
 import com.example.kepcoweb.domain.KepcoHistory
 import com.example.kepcoweb.repository.DatabaseRepository
 import com.example.kepcoweb.repository.KepcoHistoryRepository
+import com.example.kepcoweb.repository.KepcoRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
 import org.springframework.stereotype.Service
@@ -12,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class DatabaseService(
     val repository: DatabaseRepository,
-    val kepcoHistoryRepository: KepcoHistoryRepository
+    val kepcoHistoryRepository: KepcoHistoryRepository,
+    val kepcoRepository: KepcoRepository
 ) {
     fun dropTables() {
         repository.dropTables()
@@ -137,5 +139,31 @@ class DatabaseService(
     fun initializeHistoryTable() {
         repository.deleteAllHistory()
         repository.insertDefaultHistory()
+    }
+
+    fun updateFutureTable() {
+        val table20231109 = kepcoHistoryRepository.findAllByAppliedPeriod(LocalDateTime.of(2023, 11, 9, 0, 0, 0))
+        val electricRates = kepcoRepository.findAll()
+
+        assert(table20231109.size == electricRates.size)
+
+        val updatedElectricRates = electricRates.map {
+            it.apply {
+                val index = it.id - 1
+                useVal = table20231109[index].useVal
+                gb1 = table20231109[index].gb1
+                gb2 = table20231109[index].gb2
+                selVal = table20231109[index].selVal
+                baseFee = table20231109[index].baseFee
+                loadVal = table20231109[index].loadVal
+                suf = table20231109[index].suf
+                faf = table20231109[index].faf
+                wif = table20231109[index].wif
+                appliedPeriod = table20231109[index].appliedPeriod
+            }
+        }
+
+        kepcoRepository.saveAll(updatedElectricRates)
+        updateCurrentTable()
     }
 }

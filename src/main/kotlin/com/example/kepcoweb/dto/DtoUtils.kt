@@ -16,8 +16,8 @@ class DtoUtils {
             suf = it.suf,
             faf = it.faf,
             wif = it.wif,
-            createdAt = it.createdAt,
-            updatedAt = it.updatedAt,
+            createdAt = it.createdAt!!.withNano(0),
+            updatedAt = it.updatedAt!!.withNano(0),
             appliedPeriod = it.appliedPeriod
         )
 
@@ -32,8 +32,8 @@ class DtoUtils {
             suf = it.suf,
             faf = it.faf,
             wif = it.wif,
-            createdAt = it.createdAt,
-            updatedAt = it.updatedAt,
+            createdAt = it.createdAt!!.withNano(0),
+            updatedAt = it.updatedAt!!.withNano(0),
             appliedPeriod = it.appliedPeriod
         )
 
