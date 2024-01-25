@@ -133,4 +133,9 @@ class DatabaseService(
         val appliedPeriod = LocalDateTime.of(tomorrow.year, tomorrow.month, tomorrow.dayOfMonth, 0, 0, 0)
         kepcoHistoryRepository.deleteAllByAppliedPeriod(appliedPeriod)
     }
+
+    fun initializeHistoryTable() {
+        repository.deleteAllHistory()
+        repository.insertDefaultHistory()
+    }
 }

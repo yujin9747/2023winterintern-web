@@ -41,6 +41,14 @@
             location.href = '/insert-future-table';
         }
 
+        function back1() {
+            location.href = '/back1';
+        }
+
+        function back2() {
+            location.href = '/back2';
+        }
+
 
         // let search = window.location.search;
         // let params = new URLSearchParams(search);
@@ -57,8 +65,8 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <div class="row m-5">
+<!--    <div class="container">-->
+        <div class="row">
             <div class="col-sm">
                 <div class="p-3"><button onclick="location.href='/'">뒤로가기</button></div>
                 <div class="p-3"><button onclick="executeCron1()">cron1 실행</button></div>
@@ -81,78 +89,93 @@
                 <p>2024-01-31에 변경된 상황으로 만든다.</p>
 
 
+                <h5>시나리오 #2 실행 전 단계로 돌아가기</h5>
+                <p><button onclick="back1()">before #2</button></p>
+
+                <h5>시나리오 #3 실행 전 단계로 돌아가기</h5>
+                <p><button onclick="back2()">before #3</button></p>
+
+                <h5>시나리오 #4 실행 전 단계로 돌아가기</h5>
+                <p><button onclick="back1()">before #4</button></p>
+
+
                 <h1 th:text="${message}"></h1>
                 <h3 th:text="${existRates}"></h3>
                 <h3 th:text="${existHistory}"></h3>
 
-                <div>
-                    <h4>electric_rates 테이블</h4>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>UseVal</th> <th>GB1</th> <th>GB2</th> <th>SelVal</th> <th>BaseFee</th> <th>LoadVal</th> <th>SUF</th> <th>FAF</th> <th>WIF</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="k : ${kepco}">
-                            <td th:text="${k.id}"></td>
-                            <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.createdAt}"></td>
-                            <td th:text="${k.updatedAt}"></td>
-                            <td th:text="${k.appliedPeriod}" th:style="${k.periodChanged ? 'color: red;' : 'color: black;'}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div>
-                    <h4>electric_rates_history 테이블</h4>
-                    <label for="appliedPeriods">적용일자 선택:</label>
-                    <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
-                        <p>
-                            <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
-                        </p>
-                        <p th:each="a : ${appliedPeriods}">
-                            <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
-                        </p>
-                    </select>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>UseVal</th> <th>GB1</th> <th>GB2</th> <th>SelVal</th> <th>BaseFee</th> <th>LoadVal</th> <th>SUF</th> <th>FAF</th> <th>WIF</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="k : ${kepcoHistory}">
-                            <td th:text="${k.id}"></td>
-                            <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
-                            <td th:text="${k.createdAt}"></td>
-                            <td th:text="${k.updatedAt}"></td>
-                            <td th:text="${k.appliedPeriod}" th:style="${k.periodChanged ? 'color: red;' : 'color: black;'}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="row overflow-scroll table-responsive" style="height: 700px">
+                    <div class="col-sm" style="width: 700px">
+                        <div>
+                            <h4>electric_rates 테이블</h4>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>UseVal</th> <th>GB1</th> <th>GB2</th> <th>SelVal</th> <th>BaseFee</th> <th>LoadVal</th> <th>SUF</th> <th>FAF</th> <th>WIF</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="k : ${kepco}">
+                                    <td th:text="${k.id}"></td>
+                                    <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.createdAt}"></td>
+                                    <td th:text="${k.updatedAt}"></td>
+                                    <td th:text="${k.appliedPeriod}" th:style="${k.periodChanged ? 'color: red;' : 'color: black;'}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm" style="width: 700px">
+                        <div>
+                            <h4>electric_rates_history 테이블</h4>
+                            <label for="appliedPeriods">적용일자 선택:</label>
+                            <select name="appliedPeriods" id="appliedPeriods" onchange="selectBoxChange(this.value);">
+                                <p>
+                                    <option th:value="|선택 안 함|" th:text="|선택 안 함|" th:selected="${selectedPeriod} == null"></option>
+                                </p>
+                                <p th:each="a : ${appliedPeriods}">
+                                    <option th:value="${a}" th:text="${a}" th:selected="(${selectedPeriod} != null) and (${selectedPeriod} == ${a})"></option>
+                                </p>
+                            </select>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>UseVal</th> <th>GB1</th> <th>GB2</th> <th>SelVal</th> <th>BaseFee</th> <th>LoadVal</th> <th>SUF</th> <th>FAF</th> <th>WIF</th> <th>createdAt</th> <th>updatedAt</th> <th>appliedPeriod</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="k : ${kepcoHistory}">
+                                    <td th:text="${k.id}"></td>
+                                    <td th:text="${k.useVal}" th:style="${k.useValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.gb1}" th:style="${k.gb1Changed ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.gb2}" th:style="${k.gb2Changed ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.selVal}" th:style="${k.selValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.baseFee}" th:style="${k.baseFeeChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.loadVal}" th:style="${k.loadValChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.suf}" th:style="${k.sufChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.faf}" th:style="${k.fafChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.wif}" th:style="${k.wifChanged ? 'color: red;' : 'color: black;'}"></td>
+                                    <td th:text="${k.createdAt}"></td>
+                                    <td th:text="${k.updatedAt}"></td>
+                                    <td th:text="${k.appliedPeriod}" th:style="${k.periodChanged ? 'color: red;' : 'color: black;'}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+<!--    </div>-->
 </body>
 </html>

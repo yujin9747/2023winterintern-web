@@ -1,7 +1,6 @@
 package com.example.kepcoweb.service
 
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
