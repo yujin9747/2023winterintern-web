@@ -82,6 +82,19 @@ class DatabaseService(
         kepcoHistoryRepository.saveAll(tomorrowTable)
     }
 
+    fun changeCraetedAtAndUpdatedAt(date: LocalDateTime, updatedBy: LocalDate) {
+        val appliedPeriod = LocalDateTime.of(updatedBy.year, updatedBy.month, updatedBy.dayOfMonth, 0, 0, 0)
+        var table =
+            kepcoHistoryRepository.findAllByAppliedPeriod(appliedPeriod)
+
+        table.map {
+            it.apply {
+                createdAt = date
+                updatedAt = date
+            }
+        }
+    }
+
     fun insertFutureTable() {
         var table20240101 =
             kepcoHistoryRepository.findAllByAppliedPeriod(LocalDateTime.of(2024, 1, 1, 0, 0, 0))
@@ -108,5 +121,16 @@ class DatabaseService(
         futureTable[18].wif = 180.6f
 
         kepcoHistoryRepository.saveAll(futureTable)
+    }
+
+    fun deleteFutureTable() {
+        val future = LocalDateTime.of(2024, 3, 1, 0, 0, 0)
+        kepcoHistoryRepository.deleteAllByAppliedPeriod(future)
+    }
+
+    fun deleteTomorrowTable() {
+        val tomorrow = LocalDate.now().plusDays(1)
+        val appliedPeriod = LocalDateTime.of(tomorrow.year, tomorrow.month, tomorrow.dayOfMonth, 0, 0, 0)
+        kepcoHistoryRepository.deleteAllByAppliedPeriod(appliedPeriod)
     }
 }

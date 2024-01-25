@@ -264,52 +264,77 @@ class KepcoHistoryController (
     ): String {
         model.addAttribute("message", "electric_rates와 electric_rates_history 테이블 비교 조회")
 
+        var isNotExistRates = false
+        var isNotExistHistory = false
         var filteredBy: LocalDate? = null
         if (selectedPeriod == null) {
-            filteredBy = service.getCurrentAppliedPeriodByTomorrow()?.toLocalDate()
+            try {
+                filteredBy = service.getCurrentAppliedPeriodByTomorrow()?.toLocalDate()
+            } catch (e: Exception) {
+                isNotExistHistory = true
+            }
         }
         else {
             filteredBy = selectedPeriod
         }
-        var kepco: List<KepcoDto>
+
+        var kepco: List<KepcoDto> = emptyList()
         try {
-            kepco = getKepco()
+            try{
+                kepco = getKepco()
+            } catch (e: Exception) {
+                isNotExistRates = true
+            }
         } catch (e: Exception) {
             model.addAttribute("message", e.message)
             return "kepco_error"
         }
 
-        var kepcoHistory: List<KepcoDto>
+        var kepcoHistory: List<KepcoDto> = emptyList()
         try {
-            kepcoHistory = getFilteredKepcoHistory(filteredBy)
+            try {
+                kepcoHistory = getFilteredKepcoHistory(filteredBy)
+            } catch (e: Exception) {
+                isNotExistHistory = true
+            }
         } catch (e: Exception) {
             model.addAttribute("message", e.message)
             return "kepco_error"
         }
 
-        val appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
+        var appliedPeriodSet: List<LocalDate> = emptyList()
+        if (!isNotExistHistory) appliedPeriodSet = service.getAppliedPeriodsDistinct().map { it.toLocalDate() }
 
         if (filteredBy != null) {
             kepco = service.checkDifference(kepco, kepcoHistory)
             kepco = service.checkAppliedPeriodDifference(kepco, kepcoHistory)
         }
 
-        for (i in kepcoHistory.indices) {
-            kepcoHistory[i].useValChanged = kepco[i].useValChanged
-            kepcoHistory[i].gb1Changed = kepco[i].gb1Changed
-            kepcoHistory[i].gb2Changed = kepco[i].gb2Changed
-            kepcoHistory[i].selValChanged = kepco[i].selValChanged
-            kepcoHistory[i].baseFeeChanged = kepco[i].baseFeeChanged
-            kepcoHistory[i].loadValChanged = kepco[i].loadValChanged
-            kepcoHistory[i].sufChanged = kepco[i].sufChanged
-            kepcoHistory[i].fafChanged = kepco[i].fafChanged
-            kepcoHistory[i].wifChanged = kepco[i].wifChanged
-            kepcoHistory[i].periodChanged = kepco[i].periodChanged
+        if (kepcoHistory.size == kepco.size) {
+            for (i in kepcoHistory.indices) {
+                kepcoHistory[i].useValChanged = kepco[i].useValChanged
+                kepcoHistory[i].gb1Changed = kepco[i].gb1Changed
+                kepcoHistory[i].gb2Changed = kepco[i].gb2Changed
+                kepcoHistory[i].selValChanged = kepco[i].selValChanged
+                kepcoHistory[i].baseFeeChanged = kepco[i].baseFeeChanged
+                kepcoHistory[i].loadValChanged = kepco[i].loadValChanged
+                kepcoHistory[i].sufChanged = kepco[i].sufChanged
+                kepcoHistory[i].fafChanged = kepco[i].fafChanged
+                kepcoHistory[i].wifChanged = kepco[i].wifChanged
+                kepcoHistory[i].periodChanged = kepco[i].periodChanged
+            }
+        }
+
+        if (isNotExistRates) {
+            model.addAttribute("existRates", "electric_rates 테이블이 존재하지 않습니다.")
+        }
+        if (isNotExistHistory) {
+            model.addAttribute("existHistory", "electric_rates_history 테이블이 존재하지 않습니다.")
         }
 
         model.addAttribute("kepco", kepco)
         model.addAttribute("kepcoHistory", kepcoHistory)
-        model.addAttribute("appliedPeriods", appliedPeriodSet)
+        if (!isNotExistHistory) model.addAttribute("appliedPeriods", appliedPeriodSet)
         model.addAttribute("selectedPeriod", filteredBy)
 
         return "kepco_compare"

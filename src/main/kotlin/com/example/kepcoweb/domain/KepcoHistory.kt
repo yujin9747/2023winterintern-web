@@ -43,7 +43,7 @@ class KepcoHistory {
     @Column(name = "appliedPeriod", columnDefinition = "datetime(6)")
     var appliedPeriod: LocalDateTime? = null
 
-    @UpdateTimestamp
+//    @UpdateTimestamp
     @Column(name = "updatedAt", nullable = false, columnDefinition = "datetime(6)")
     var updatedAt: LocalDateTime? = LocalDateTime.now()
 

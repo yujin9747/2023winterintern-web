@@ -35,4 +35,6 @@ interface KepcoHistoryRepository : JpaRepository<KepcoHistory, Int> {
 
     @Query("SELECT DISTINCT k.appliedPeriod FROM KepcoHistory k")
     fun findDistinctByAppliedPeriod(): List<LocalDateTime>
+
+    fun deleteAllByAppliedPeriod(appliedPeriod: LocalDateTime)
 }

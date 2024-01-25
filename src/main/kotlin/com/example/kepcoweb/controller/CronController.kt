@@ -13,29 +13,41 @@ class CronController (
     val service: CronService
 ){
     @GetMapping("/execute-cron1")
-    fun executeCron1(): String {
+    fun executeCron1(request: HttpServletRequest): String {
         service.executeCron1()
-        return "redirect:/"
-    }
-
-    @GetMapping("/execute-cron2")
-    fun executeCron2(
-        request: HttpServletRequest,
-        @RequestParam("success", required = false) success: Boolean?,
-        @RequestParam("reason", required = false) reason: String?
-    ): String {
-
-        var success = true
-        var reason = ""
-        try {
-            service.executeCron2()
-        } catch (e: Exception) {
-            success = false
-            reason = e.message!!
-        }
 
         val referer = request.getHeader("Referer")
         val beforeQueryPeram = referer.substringBefore("?")
-        return "redirect:$beforeQueryPeram?success=$success&reason=$reason"
+        return "redirect:$beforeQueryPeram"
     }
+
+    @GetMapping("/execute-cron2")
+    fun executeCron2(request: HttpServletRequest): String {
+        service.executeCron2()
+
+        val referer = request.getHeader("Referer")
+        val beforeQueryPeram = referer.substringBefore("?")
+        return "redirect:$beforeQueryPeram"
+    }
+
+//    @GetMapping("/execute-cron2")
+//    fun executeCron2(
+//        request: HttpServletRequest,
+//        @RequestParam("success", required = false) success: Boolean?,
+//        @RequestParam("reason", required = false) reason: String?
+//    ): String {
+//
+//        var success = true
+//        var reason = ""
+//        try {
+//            service.executeCron2()
+//        } catch (e: Exception) {
+//            success = false
+//            reason = e.message!!
+//        }
+//
+//        val referer = request.getHeader("Referer")
+//        val beforeQueryPeram = referer.substringBefore("?")
+//        return "redirect:$beforeQueryPeram?success=$success&reason=$reason"
+//    }
 }
