@@ -13,11 +13,11 @@ class CronService (
 
     private val processBuilder = ProcessBuilder()
     fun executeCron1(){
-        executeCommand("$containerPrefix-crawler-1")
+        executeCommand("$containerPrefix-scrap-from-web-1")
     }
 
     fun executeCron2(){
-        executeCommand("$containerPrefix-update-recent-table-1")
+        executeCommand("$containerPrefix-apply-current-electric-fee-from-history-1")
     }
 
     internal fun executeCommand(container: String) {
